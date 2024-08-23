@@ -4,25 +4,27 @@ Harl::Harl( void ) {}
 
 Harl::~Harl ( void ) {}
 
-void Harl::complain ( std::string level ) {
-	void	(Harl::*funcPtr)(void) const = NULL;
-	void	(Harl::*funcArray[4])(void) const = {&Harl::debug, &Harl::info, &Harl::warning, &Harl::error};
-
-	std::string levels[4] = {"debug", "info", "warning", "error"};
+void Harl::complain ( std::string level )  {
+	std::string	levels[4] = {"DEBUG", "INFO", "WARNING", "ERROR"};
 	int					i;
 
 	for (i = 0; i < 4; i++) {
-		if (level == levels[i]) {
-			funcPtr = funcArray[i];
+		if (levels[i] == level)
 			break;
-		}
 	}
-	if (i == 4) {
-		std::cerr << ROSE300 "Do want to complaing even more?!!\n" RESET;
-		return;
-	}
-	(this->*funcPtr)();
 
+	switch (i)
+	{
+	case 0:
+		this->debug();
+	case 1:
+		this->info();
+	case 2:
+		this->warning();
+	case 3:
+		this->error();
+		break;
+	}
 }
 
 void Harl::debug ( void ) const {
