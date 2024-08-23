@@ -1,0 +1,32 @@
+NAME = replace
+
+SRC = src/main.cpp src/replace.cpp
+
+CPP = c++
+
+CFLAGS = -Wall -Wextra -Werror
+
+C98 = -std=c++98
+
+all: $(NAME)
+	@echo Compiling...
+	$(CPP) $(CFLAGS) $(C98) $(SRC) -o $(NAME)
+	@echo Compilation complete created the executable-> $(NAME)
+
+clean:
+	rm -f $(NAME)
+
+re: clean all
+
+run: all
+	./$(NAME)
+
+val: all
+	valgrind --leak-check=full --show-leak-kinds=all ./$(NAME)
+
+.SILENT:
+
+.DEFAULT:
+	@echo "Usage: make [all | clean | re]"
+
+.PHONY: all clean re
