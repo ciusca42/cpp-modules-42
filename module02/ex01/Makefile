@@ -1,6 +1,6 @@
-NAME = replace
+NAME = fixed
 
-SRC = src/main.cpp src/replace.cpp
+SRC = main.cpp Fixed.cpp
 
 CPP = c++
 
@@ -11,18 +11,12 @@ C98 = -std=c++98
 all: $(NAME)
 	@echo Compiling...
 	$(CPP) $(CFLAGS) $(C98) $(SRC) -o $(NAME)
-	@echo Compilation complete created the executable
+	@echo Compilation complete.
 
 clean:
 	rm -f $(NAME)
 
 re: clean all
-
-run: all
-	./$(NAME)
-
-val: all
-	valgrind --leak-check=full --show-leak-kinds=all ./$(NAME)
 
 .SILENT:
 

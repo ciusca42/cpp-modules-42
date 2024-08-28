@@ -5,6 +5,13 @@ PhoneBook::PhoneBook() : last(0), amount(0) {}
 PhoneBook::~PhoneBook() {
 }
 
+int check_input( std::string line ) {
+	if (line == "") {
+		system("clear");
+		std::cerr << ROSE300 "\tInput cannot be empty\n" RESET;
+		return 0;
+	}
+}
 
 void PhoneBook::add() {
 
@@ -20,36 +27,39 @@ void PhoneBook::add() {
 	system("clear");
 	std::cout << "    " LIME400 "ADD " RESET "operation: " LIME200 "please follow the steps:\n\n" RESET;
 
-	std::cout << "    Insert the contact " EMERALD300 "NAME" RESET ": ";
-	getline(std::cin, new_name);
-	if (std::cin.eof()) {
-		std::cout << ROSE300 "\nsee ya...\n" RESET;
-		_Exit(0);
+	while (1) {
+		std::cout << "    Insert the contact " EMERALD300 "NAME" RESET ": ";
+		getline(std::cin, new_name);
+		
+		std::cout << RESET "    Insert the contact " EMERALD300 "LAST NAME" RESET ": " ;
+		if (getline(std::cin, last).eof());
+			close_phonebook();
+		if (new_name == "" || last == "" || new_nick == "" || new_number == "" || new_secret == "") {
+			std::cerr << ROSE300 "\tInput cannot be empty\n" RESET;
+			continue;
+		}
+		std::cout << RESET "    Insert the contact " EMERALD300 "NICKNAME" RESET ": " ;
+		getline(std::cin, new_nick);
+		if (new_name == "" || last == "" || new_nick == "" || new_number == "" || new_secret == "") {
+			std::cerr << ROSE300 "\tInput cannot be empty\n" RESET;
+			continue;
+		}
+		std::cout << RESET "    Insert the contact " EMERALD300 "NUMBER" RESET ": " ;
+		getline(std::cin, new_number);
+		if (new_name == "" || last == "" || new_nick == "" || new_number == "" || new_secret == "") {
+			system("clear");
+			std::cerr << ROSE300 "\tInput cannot be empty\n" RESET;
+			continue;
+		}
+		std::cout << RESET "    Insert the contact " EMERALD300 "SECRET" RESET ": " ;
+		getline(std::cin, new_secret);
+		if (new_name == "" || last == "" || new_nick == "" || new_number == "" || new_secret == "") {
+			std::cerr << ROSE300 "\tInput cannot be empty\n" RESET;
+			continue;
+		}
 	}
-	std::cout << RESET "    Insert the contact " EMERALD300 "LAST NAME" RESET ": " ;
-	getline(std::cin, last);
-	if (std::cin.eof()) {
-		std::cout << ROSE300 "\nsee ya...\n" RESET;
-		_Exit(0);
-	}
-	std::cout << RESET "    Insert the contact " EMERALD300 "NICKNAME" RESET ": " ;
-	getline(std::cin, new_nick);
-	if (std::cin.eof()) {
-		std::cout << ROSE300 "\nsee ya...\n" RESET;
-		_Exit(0);
-	}
-	std::cout << RESET "    Insert the contact " EMERALD300 "NUMBER" RESET ": " ;
-	getline(std::cin, new_number);
-	if (std::cin.eof()) {
-		std::cout << ROSE300 "\nsee ya...\n" RESET;
-		_Exit(0);
-	}
-	std::cout << RESET "    Insert the contact " EMERALD300 "SECRET" RESET ": " ;
-	getline(std::cin, new_secret);
-	if (std::cin.eof()) {
-		std::cout << ROSE300 "\nsee ya...\n" RESET;
-		_Exit(0);
-	}
+	
+	
 
 	contacts[this->last].set_name(new_name);
 	contacts[this->last].set_last(last);
