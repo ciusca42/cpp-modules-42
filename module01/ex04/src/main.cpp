@@ -1,5 +1,4 @@
-#include "../includes/replace.hpp"
-#include <vector>
+#include "../includes/Replace.hpp"
 
 
 int main(int argc, char **argv) {
@@ -7,6 +6,8 @@ int main(int argc, char **argv) {
 		std::cerr << LIME200 "Usage: <filename> set1 set2" RESET << '\n';
 		return 1;
 	}
-	if (!findAndReplace(argv[1], argv[2], argv[3]))
+
+	Replace file;
+	if (!file.findAndReplace(argv[1], argv[2], argv[3]))
 		return 1;
 }

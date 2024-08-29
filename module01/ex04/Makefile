@@ -1,6 +1,6 @@
 NAME = replace
 
-SRC = src/main.cpp src/replace.cpp
+SRC = src/main.cpp src/Replace.cpp
 
 CPP = c++
 

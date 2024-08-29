@@ -48,6 +48,11 @@
 		"streambuf": "cpp",
 		"typeinfo": "cpp",
 		"ctime": "cpp",
-		"iomanip": "cpp"
+		"iomanip": "cpp",
+		"cfenv": "cpp",
+		"cinttypes": "cpp",
+		"csetjmp": "cpp",
+		"csignal": "cpp",
+		"cstring": "cpp"
 	}
 }

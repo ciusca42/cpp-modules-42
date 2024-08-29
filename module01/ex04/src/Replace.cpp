@@ -1,8 +1,6 @@
 
-#include "../includes/replace.hpp"
-#include <fstream>
-#include <string>
-#include <sstream>
+#include "../includes/Replace.hpp"
+
 
 void error(std::string error) {
 	std::cerr << ROSE300 "Error: ";
@@ -22,9 +20,7 @@ int	parseInput(const str filename, const str set1, const str set2) {
 	return 1;
 }
 
-int	findAndReplace(const str filename, const str set1, const str set2) {
-	std::ifstream	inFile;
-	std::ofstream	outFile;
+int	Replace::findAndReplace(const str filename, const str set1, const str set2) {
 	str				line;
 	int				start;
 
@@ -51,5 +47,11 @@ int	findAndReplace(const str filename, const str set1, const str set2) {
 		}
 		outFile << line;
 	}
+	inFile.close();
+	outFile.close();
 	return (1);
 }
+
+Replace::Replace( void ) {}
+
+Replace::~Replace ( void ) {}
