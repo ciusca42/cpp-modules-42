@@ -6,7 +6,7 @@
 class Zombie {
 
 	public:
-		Zombie() {};
+		Zombie();
 		~Zombie();
 		Zombie & operator=(const Zombie & obj);
 		void randomChump( std::string name );

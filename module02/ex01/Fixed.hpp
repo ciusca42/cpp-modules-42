@@ -22,4 +22,6 @@ class Fixed {
 		static const int	bits = 8;
 };
 
+std::ostream& operator<<(std::ostream& stream, Fixed const &obj);
+
 #endif

@@ -1,5 +1,9 @@
 #include "Zombie.hpp"
 
+Zombie::Zombie ( void ){
+	std::cout << "Creating zombie" << '\n';
+}
+
 Zombie::~Zombie ( void ) {
 	std::cout << "Destroyng: " << this->name << '\n';
 }

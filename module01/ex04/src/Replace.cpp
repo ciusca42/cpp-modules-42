@@ -1,6 +1,14 @@
 
 #include "../includes/Replace.hpp"
-
+#include <string>
+#include <iostream>
+#include <cctype>
+#include <string>
+#include <unistd.h>
+#include <cstdlib>
+#include <sstream>
+#include <iomanip>
+#include <cstdio>
 
 void error(std::string error) {
 	std::cerr << ROSE300 "Error: ";
@@ -23,6 +31,7 @@ int	parseInput(const str filename, const str set1, const str set2) {
 int	Replace::findAndReplace(const str filename, const str set1, const str set2) {
 	str				line;
 	int				start;
+	str				newFileName;
 
 	if (!parseInput(filename, set1, set2))
 		return 0;
@@ -32,7 +41,13 @@ int	Replace::findAndReplace(const str filename, const str set1, const str set2) 
 		error("'" + filename + "' does not exist");
 		return 0;
 	}
-	outFile.open((filename + ".replace").c_str() , std::ios::trunc);
+
+	start = filename.find_last_of(".");
+	int temp = filename.length() - start;
+	newFileName = filename;
+	newFileName.resize(filename.length() - temp);
+
+	outFile.open((newFileName + ".replace").c_str() , std::ios::trunc);
 	if (!outFile.is_open()) {
 		error("something went wrong: cannot create the replacment file");
 		return 0;

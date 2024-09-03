@@ -3,7 +3,7 @@
 Zombie*	Zombie::newZombie(std::string name) {
 	Zombie	*zombie = new Zombie;
 
-	zombie->setName(name);
+	zombie->name = name;
 	zombie->announce();
 	return zombie;
 }
