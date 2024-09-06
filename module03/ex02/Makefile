@@ -2,7 +2,7 @@ NAME = claptrap
 
 SRC_DIR = src/
 
-SRC = ClapTrap.cpp main.cpp ScavTrap.cpp
+SRC = ClapTrap.cpp main.cpp ScavTrap.cpp FragTrap.cpp
 
 CPP = c++
 

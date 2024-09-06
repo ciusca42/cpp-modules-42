@@ -6,7 +6,7 @@ ScavTrap::ScavTrap(void) {
 
 ScavTrap::ScavTrap( std::string name ): ClapTrap(name) {
 	std::cout << STONE300 << this->getName() << RESET << " <-- name [";
-	std::cout << EMERALD400 << "ScavTrap" << RESET << "] destroyed\n";
+	std::cout << EMERALD400 << "ScavTrap" << RESET << "] created\n";
 	this->setEnergyPoints(50);
 	this->setHitPoints(100);
 	this->setAtkDmg(20);
@@ -14,11 +14,6 @@ ScavTrap::ScavTrap( std::string name ): ClapTrap(name) {
 
 ScavTrap::~ScavTrap( void ) {
 	std::cout << "ScavTrap destructor called\n";
-}
-
-ScavTrap& ScavTrap::operator=(const ScavTrap &obj) {
-	this->setName(obj.getName());
-	return *this;
 }
 
 void ScavTrap::attack( const std::string &target) {
@@ -44,6 +39,6 @@ void ScavTrap::attack( const std::string &target) {
 }
 
 void ScavTrap::guardGate( void ) {
-	std::cout << CYAN300 << "guardGate activated!" << RESET
+	std::cout << CYAN300 << "GuardGate" << RESET << " activated!"
 		<< " You shall not pass!!\n";
 }
