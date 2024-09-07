@@ -7,6 +7,7 @@
 
 class ClapTrap {
 	public:
+		ClapTrap();
 		ClapTrap( std::string name );
 		~ClapTrap();
 		void attack( const std::string& target );

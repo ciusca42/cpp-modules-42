@@ -15,17 +15,7 @@ class ClapTrap {
 		void beRepaired ( unsigned int amount );
 		void diePrint(void);
 		void noEnergy(void);
-		/* getter and setter */
-		std::string getName(void) const;
-		int			getHitPoints(void) const;
-		int			getEnergyPoints(void) const;
-		int			getAttackDmg(void) const;
-
-		void		setName(std::string name);
-		void		setHitPoints(unsigned int amount);
-		void		setEnergyPoints(unsigned int amount);
-		void 		setAtkDmg (unsigned int amount );
-	private:
+	protected:
 		std::string name;
 		int hitPoints;
 		int energyPoints;

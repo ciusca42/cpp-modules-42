@@ -1,10 +1,11 @@
 #include "FragTrap.hpp"
 
-FragTrap::FragTrap(): ClapTrap() {
+FragTrap::FragTrap() {
+	this->name = "none";
 	this->hitPoints = 100;
 	this->energyPoints = 100;
 	this->attackDmg = 30;
-	this->name = "none";
+	std::cout << "FragTrap default costrcutro called\n";
 }
 
 FragTrap::FragTrap( std::string name ): ClapTrap(name) {
@@ -12,7 +13,6 @@ FragTrap::FragTrap( std::string name ): ClapTrap(name) {
 	this->hitPoints = 100;
 	this->energyPoints = 100;
 	this->attackDmg = 30;
-	
 	std::cout << STONE300 << name << RESET << " <-- name [" << LIME300 << "FragTrap" << RESET << "] created\n"; 
 }
 

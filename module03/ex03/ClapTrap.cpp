@@ -73,35 +73,3 @@ void ClapTrap::beRepaired ( unsigned int amount ) {
 	std::cout << " hitPoints\n";
 	std::cout << STONE300 << "Current hitPoints: " << LIME300 << this->hitPoints << '\n' << RESET;
 }
-
-void ClapTrap::setAtkDmg( unsigned int amount ) {
-	this->attackDmg = amount;
-}
-
-void ClapTrap::setHitPoints(unsigned int amount ) {
-	this->hitPoints = amount;
-}
-
-void ClapTrap::setEnergyPoints(unsigned int amount) {
-	this->energyPoints = amount;
-}
-
-void ClapTrap::setName(std::string name) {
-	this->name = name;
-}
-
-std::string ClapTrap::getName(void) const {
-	return this->name;
-}
-
-int	ClapTrap::getHitPoints(void) const {
-	return this->hitPoints;
-}
-
-int ClapTrap::getEnergyPoints(void) const {
-	return this->energyPoints;
-}
-
-int ClapTrap::getAttackDmg(void) const {
-	return this->attackDmg;
-}

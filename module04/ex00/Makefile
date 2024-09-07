@@ -1,8 +1,10 @@
-NAME = claptrap
+NAME = animal
 
 SRC_DIR = src/
 
-SRC = ClapTrap.cpp main.cpp ScavTrap.cpp FragTrap.cpp
+CPP_FILES = main.cpp Animal.cpp Dog.cpp Cat.cpp
+
+SRC = $(addprefix src/, $(CPP_FILES))
 
 CPP = c++
 
@@ -12,20 +14,19 @@ C98 = -std=c++98
 
 BUILD_DIR = build
 
-OBJ = $(patsubst %.cpp, $(BUILD_DIR)/%.o, $(SRC))
+OBJ = $(patsubst $(SRC_DIR)%, $(BUILD_DIR)/%, $(SRC:.cpp=.o))
 
 all: $(NAME)
 
 $(NAME): $(OBJ)
 	@echo Compiling...
 	@if [ ! -d $(BUILD_DIR) ]; then\
-  		mkdir $(BUILD_DIR);\
+		mkdir $(BUILD_DIR);\
 	fi
-
 	$(CPP) $(CFLAGS) $(C98) $(OBJ) -o $(NAME)
-	@echo "Compilation complete.\n\n"
+	@echo Compilation complete.
 
-$(BUILD_DIR)/%.o: %.cpp
+$(BUILD_DIR)/%.o: src/%.cpp
 	@mkdir -p $(BUILD_DIR)
 	$(CPP) $(CFLAGS) $(C98) -c $< -o $@
 
