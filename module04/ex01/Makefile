@@ -2,7 +2,7 @@ NAME = animal
 
 SRC_DIR = src/
 
-CPP_FILES = main.cpp Animal.cpp Dog.cpp Cat.cpp WrongAnimal.cpp WrongCat.cpp
+CPP_FILES = main.cpp Animal.cpp Dog.cpp Cat.cpp WrongAnimal.cpp WrongCat.cpp Brain.cpp
 
 SRC = $(addprefix src/, $(CPP_FILES))
 

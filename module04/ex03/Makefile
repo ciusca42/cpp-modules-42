@@ -1,8 +1,8 @@
-NAME = animal
+NAME = materia
 
 SRC_DIR = src/
 
-CPP_FILES = main.cpp Animal.cpp Dog.cpp Cat.cpp WrongAnimal.cpp WrongCat.cpp
+CPP_FILES = main.cpp
 
 SRC = $(addprefix src/, $(CPP_FILES))
 
@@ -31,7 +31,7 @@ $(BUILD_DIR)/%.o: src/%.cpp
 	$(CPP) $(CFLAGS) $(C98) -c $< -o $@
 
 clean:
-	rm -f $(BUILD_DIR)/*.O $(NAME)
+	rm -f $(BUILD_DIR)/*.o $(NAME)
 	@rm -rf $(BUILD_DIR)
 
 re: clean all
@@ -45,6 +45,6 @@ val: all
 .SILENT:
 
 .DEFAULT:
-	@echo "Usage: make [all | clean | re | run | val ]"
+	@echo "Usage: make [ all | clean | re | run | val ]"
 
 .PHONY: all clean re
