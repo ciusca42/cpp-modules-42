@@ -1,7 +1,7 @@
 #include "../classes/AMateria.hpp"
 
 AMateria::AMateria(): type("None") {
-	debugPrint("Materia", 0);
+	debugPrint("Materia", 0);	
 }
 
 AMateria::~AMateria() {
@@ -9,15 +9,17 @@ AMateria::~AMateria() {
 }
 
 AMateria::AMateria(std::string const &type): type(type) {
-	debugPrint("Materia Type", 0);
+	debugPrint("Materia: " + type, 0);
 }
 
 AMateria::AMateria(const AMateria &obj) {
 	*this = obj;
 }
 
-AMateria & AMateria::operator=(const AMateria &obj) {
-	return *this;
+void AMateria::use(ICharacter &target) const {
+	std::cout << "Can't use this, im not a specified materia!\n";
 }
 
-void AMateria::use(ICharacter &target) {}
+std::string const & AMateria::getType(void) const {
+	return this->type;
+}

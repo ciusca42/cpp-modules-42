@@ -1,8 +1,7 @@
 #include "../classes/Ice.hpp"
 
-Ice::Ice(void) {
+Ice::Ice(void): AMateria("ice"), type("ice") {
 	debugPrint("Ice", 0);
-	this->type = "ice";
 }
 
 Ice::~Ice(void) {
@@ -22,4 +21,12 @@ AMateria* Ice::clone(void) const {
 	AMateria *cloned = new Ice();
 
 	return cloned;
+}
+
+void Ice::use(ICharacter &target) const {
+	std::cout << LIME300 << "* " << RESET << "shoots an " << CYAN400 << "ice bolt" << RESET << " at " << target.getName() << LIME300 << " *" << RESET << '\n';
+}
+
+std::string const & Ice::getType(void) const {
+	return this->type;
 }

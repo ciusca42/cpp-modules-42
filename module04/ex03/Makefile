@@ -2,13 +2,14 @@ NAME = materia
 
 SRC_DIR = src/
 
-CPP_FILES = main.cpp
+CPP_FILES = main.cpp AMateria.cpp Character.cpp Cure.cpp \
+			Ice.cpp ICharacter.cpp MateriaSource.cpp
 
 SRC = $(addprefix src/, $(CPP_FILES))
 
 CPP = c++
 
-FLAGS = -Wall -Wextra -Werror
+FLAGS = -Wall -Wextra -Werror -g 
 
 C98 = -std=c++98
 

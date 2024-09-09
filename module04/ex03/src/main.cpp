@@ -1,4 +1,9 @@
 #include "../includes/interface.hpp"
+#include "../classes/Character.hpp"
+#include "../classes/Ice.hpp"
+#include "../classes/Cure.hpp"
+#include "../classes/IMateriaSource.hpp"
+#include "../classes/MateriaSource.hpp"
 
 void debugPrint(std::string name, int type) {
 
@@ -6,4 +11,32 @@ void debugPrint(std::string name, int type) {
 
 	std::cout << EMERALD300 << name << RESET << types[type];
 }
+int main(void)
+{
+	std::cout << YELLOW300 << "\n---------COSTRUCTORS--------\n" << RESET;
+	IMateriaSource* src = new MateriaSource();
+	ICharacter* me = new Character("me");
+	AMateria	*tmp, *tmp2;
+	ICharacter* bob = new Character("bob");
+	Ice *ice = new Ice();
+	Cure *cure = new Cure();
 
+	std::cout << YELLOW300 << "\n---------MEMBER FUNCTIONS--------\n" << RESET;
+	src->learnMateria(ice);
+	src->learnMateria(cure);
+	std::cout << '\n';
+	tmp = src->createMateria("ice");
+	tmp2 = src->createMateria("cure");
+	std::cout << '\n';
+	me->equip(tmp);
+	me->equip(tmp2);
+	std::cout << '\n';
+	me->use(0, *bob);
+	me->use(1, *bob);
+	
+	std::cout << YELLOW300 << "\n---------DESTRUCTORS--------\n" << RESET;
+	delete bob;
+	delete me;
+	delete src;
+	return 0;
+}

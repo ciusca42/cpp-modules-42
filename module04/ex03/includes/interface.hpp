@@ -6,9 +6,12 @@
 
 /* -------CLASSES------- */
 class ICharacter;
+class Character;
 class AMateria;
 class Cure;
 class Fire;
+class MateriaSource;
+class IMateriaSource;
 
 void debugPrint(std::string name, int type);
 
