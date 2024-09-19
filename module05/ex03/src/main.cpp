@@ -5,6 +5,8 @@
 #include "../classes/Intern.hpp"
 #include <exception>
 #include <iostream>
+#include <stdexcept>
+#include <system_error>
 
 int main(void) {
 
