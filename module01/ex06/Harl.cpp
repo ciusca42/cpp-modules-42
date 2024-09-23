@@ -1,4 +1,5 @@
 #include "Harl.hpp"
+#include "colors.hpp"
 
 Harl::Harl( void ) {}
 
@@ -23,6 +24,9 @@ void Harl::complain ( std::string level )  {
 		this->warning();
 	case 3:
 		this->error();
+		break;
+	default:
+		std::cout << YELLOW200 << "how many complaints do you want? arn't already to much??\n" RESET;
 		break;
 	}
 }

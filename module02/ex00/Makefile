@@ -9,10 +9,11 @@ CFLAGS = -Wall -Wextra -Werror
 C98 = -std=c++98
 
 all: $(NAME)
+
+$(NAME): $(SRC)
 	@echo Compiling...
 	$(CPP) $(CFLAGS) $(C98) $(SRC) -o $(NAME)
 	@echo Compilation complete.
-
 clean:
 	rm -f $(NAME)
 

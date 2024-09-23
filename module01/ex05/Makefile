@@ -9,14 +9,23 @@ CFLAGS = -Wall -Wextra -Werror
 C98 = -std=c++98
 
 all: $(NAME)
+
+$(NAME): $(SRC)
 	@echo Compiling...
 	$(CPP) $(CFLAGS) $(C98) $(SRC) -o $(NAME)
 	@echo Compilation complete.
+	@echo "==========================\n"
 
 clean:
 	rm -f $(NAME)
 
 re: clean all
+
+run: all
+	./$(NAME);
+
+val: all
+	valgrind --leak-check=full ./$(NAME)
 
 .SILENT:
 
@@ -24,3 +33,4 @@ re: clean all
 	@echo "Usage: make [all | clean | re]"
 
 .PHONY: all clean re
+

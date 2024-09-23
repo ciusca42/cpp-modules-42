@@ -4,7 +4,7 @@ int main(int argc, char **argv) {
 
 	if (argc != 2) {
 		std::cout << "[ Probably complaining about insignificant problems ]\n";
-		return 1;
+		return 0;
 	}
 	Harl harl;
 

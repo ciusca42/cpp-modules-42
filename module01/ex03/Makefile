@@ -1,6 +1,6 @@
-NAME = violence
+NAME = human
 
-SRC = HumanA.cpp Weapon.cpp HumanB.cpp main.cpp
+SRC = main.cpp HumanA.cpp HumanB.cpp Weapon.cpp
 
 CPP = c++
 
@@ -9,9 +9,12 @@ CFLAGS = -Wall -Wextra -Werror
 C98 = -std=c++98
 
 all: $(NAME)
+
+$(NAME): $(SRC)
 	@echo Compiling...
 	$(CPP) $(CFLAGS) $(C98) $(SRC) -o $(NAME)
 	@echo Compilation complete.
+	@echo "==========================\n"
 
 clean:
 	rm -f $(NAME)
@@ -19,7 +22,10 @@ clean:
 re: clean all
 
 run: all
-	./$(NAME)
+	./$(NAME);
+
+val: all
+	valgrind --leak-check=full ./$(NAME)
 
 .SILENT:
 
@@ -27,3 +33,4 @@ run: all
 	@echo "Usage: make [all | clean | re]"
 
 .PHONY: all clean re
+
