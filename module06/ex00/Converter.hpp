@@ -17,5 +17,4 @@ class ScalarConverter {
 		ScalarConverter();
 };
 
-
 #endif

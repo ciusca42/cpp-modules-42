@@ -85,7 +85,7 @@ int isDouble(std::string &value) {
 		value.erase(0, 1);
 	}
 	if (final == value) {
-		std::cout << "double\n";
+			std::cout << "double\n";
 		if (d == INFINITY || d == -INFINITY || d != d) {
 			std::cout << "Char: Impossible\n";
 			std::cout << "Int: Impossible\n";
@@ -111,7 +111,8 @@ int isFloat(std::string &value) {
 	std::cout << std::setprecision(countPrecision(value));
 	f = atof(value.c_str());
 	//std::cout << "f = " << f << '\n';
-	str << f; 
+	str << f;
+ 
 	final = str.str();
 	if (value[0] == '+') {
 		value.erase(0, 1);
