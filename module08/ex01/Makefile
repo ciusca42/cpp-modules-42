@@ -1,8 +1,6 @@
-NAME = easyfind
+NAME = span
 
-SRC = main.cpp
-
-INCLUDES = easyfind.hpp
+SRC = 
 
 CPP = c++
 
@@ -11,7 +9,7 @@ CFLAGS = -Wall -Wextra -Werror -g
 C98 = -std=c++98
 
 all: $(NAME)
-$(NAME): $(SRC) $(INCLUDES)
+$(NAME): $(SRC)
 	@echo Compiling...
 	$(CPP) $(CFLAGS) $(C98) $(SRC) -o $(NAME)
 	@echo Compilation complete.
