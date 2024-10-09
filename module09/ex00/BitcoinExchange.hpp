@@ -5,26 +5,30 @@
 #include <string>
 #include <map>
 
+#define DB_PATH "db/data.csv"
+
 typedef std::map<std::string, double>::iterator iter;
 
 class BitcoinExchange {
 	public:
-		BitcoinExchange(std::string inputFile);
+		BitcoinExchange(std::string inputPath);
 		~BitcoinExchange();
 		BitcoinExchange(const BitcoinExchange & obj);
 		BitcoinExchange & operator=(const BitcoinExchange & obj);
 
-		void printValue(std::string date);
+		void printValue(std::string line);
 
 	private:
-		void setDb();
-		void setInput(std::string &inputfile);
+		void setDb(std::ifstream &dbFile);
 
-		std::string tokenizeDate(std::string &line, std::string delim);
-		std::string parseDate(std::string &inputDate);
-	
+		/* don't need maybe */
+		void setInput(std::ifstream &inputfile);
+		void tokenizeDate(std::string line, std::string delim, std::map<std::string, double> &mp);
+		/* ---------------- */
+		
 		std::map<std::string, double> db;
 		std::map<std::string, double> dateInput;
+		
 };
 
 #endif

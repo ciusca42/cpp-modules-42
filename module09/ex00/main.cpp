@@ -1,7 +1,7 @@
 #include "BitcoinExchange.hpp"
 
 int main(void) { 
-	BitcoinExchange btc("data.csv");
+	BitcoinExchange btc(DB_PATH);
 
-	btc.printValue("data");
+	btc.printValue("     2019-12-13 |     3      ");
 }
