@@ -28,6 +28,6 @@ val: all
 .SILENT:
 
 .DEFAULT:
-	@echo "Usage: make [ all | clean | re | run | val ]"
+	@echo "Usage: make [ all | clean | re | run | val ]" 
 
 .PHONY: all clean re run val
