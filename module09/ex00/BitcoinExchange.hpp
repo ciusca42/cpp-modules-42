@@ -13,24 +13,21 @@ typedef std::map<std::string, double>::iterator iter;
 
 class BitcoinExchange {
 	public:
-		BitcoinExchange(std::string inputPath);
+		BitcoinExchange();
 		~BitcoinExchange();
 		BitcoinExchange(const BitcoinExchange & obj);
 		BitcoinExchange & operator=(const BitcoinExchange & obj);
 
-		void printValue(void);
+		void printValue(std::ifstream &inputFile);
 
 	private:
-		int setMap(std::ifstream &dbFile, std::map<time_t, double> &mp, std::string delim);
+		int setDb(std::ifstream &dbFile);
 
 		/* don't need maybe */
-		int setInput(std::ifstream &inputfile);
-		void tokenizeDate(std::string line, std::string delim, std::map<std::string, double> &mp);
 		std::map<std::string, double> dateInput;
 		/* ---------------- */
 		
 		std::map<time_t, double> db;	
-		std::map<time_t, double> input;	
 };
 
 #endif

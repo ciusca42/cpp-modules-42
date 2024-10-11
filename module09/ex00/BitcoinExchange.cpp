@@ -1,4 +1,5 @@
 #include "BitcoinExchange.hpp"
+#include <climits>
 #include <cstddef>
 #include <cstdlib>
 #include <ctime>
@@ -14,27 +15,18 @@ void trimSpace(std::string &str) {
 		str.erase(str.length() - 1, 1);
 }
 
-BitcoinExchange::BitcoinExchange(std::string inputPath) {
-	std::ifstream dbFile, inputFile;
+BitcoinExchange::BitcoinExchange() {
+	std::ifstream dbFile;
 	
 	dbFile.open(DB_PATH);
 	if (!dbFile.is_open())
 		exit(1);
 
-	inputFile.open(inputPath.c_str());
-	if (!inputFile.is_open()) {
+	if (!this->setDb(dbFile)) {
 		dbFile.close();
-		exit(1);
-	}
-
-	if (!this->setMap(dbFile, this->db, ",") || !this->setMap(inputFile, this->input, "|")) {
-		dbFile.close();
-		inputFile.close();
-		std::cout << "error\n";
 		exit(1);
 	}
 	dbFile.close();
-	inputFile.close();
 }
 
 BitcoinExchange::~BitcoinExchange() {}
@@ -47,19 +39,6 @@ BitcoinExchange &BitcoinExchange::operator=(const BitcoinExchange &obj) {
 	this->db = obj.db;
 	return *this;
 }
-
-
-void BitcoinExchange::tokenizeDate(std::string line, std::string delim, std::map<std::string, double> &mp) {
-	std::string key, value;
-	int			delimPos;
-
-	delimPos = line.find(delim);
-	key.insert(0, line, 0, delimPos);
-	value.insert(0, line, delimPos + delim.length());
-	mp[key] = atof(value.c_str());
-}
-
-
 
 time_t parseDate(const char *dateString) {
     struct tm tmStruct = {};  // Initialize to zero to avoid garbage values
@@ -80,48 +59,71 @@ std::string dateTime(time_t time) {
     return std::string(buffer);
 }
 
-int BitcoinExchange::setMap(std::ifstream &file, std::map<time_t, double> &mp, std::string delim) { 
+int BitcoinExchange::setDb(std::ifstream &file) { 
 	std::string line;
 	std::string key, value;
 	int			pos;
 
 	getline(file, line);
 	while (getline(file, line)) {
-		pos = line.find(delim);
+		pos = line.find(",");
 		if (pos == -1) {
 			return 0;
 		}
 		key.insert(0, line, 0, pos);
 		value.insert(0, line, pos + 1);
 		// std::cout << "\ninit: " << key << '\n';
-		mp[parseDate(key.c_str())] = atof(value.c_str());
+		this->db[parseDate(key.c_str())] = atof(value.c_str());
 		key.clear();
 		value.clear();
 	}
 	return 1;
 }
 
-void BitcoinExchange::printValue() {
-	
-	std::stringstream	str;
+int	parseNumber(double btc) {
+	if (btc < 0) {
+		std::cerr << "invalid btc numberd\n";
+		return -1;
+	}
+	if (btc > INT_MAX) {
+		std::cerr << "btc number too big\n";
+		return -1;
+	}
+	return 0;
+}
+
+void BitcoinExchange::printValue(std::ifstream &inputFile) {
+	std::string		line;
+	time_t			date;
+	double			btcN;
+	int				pos;
+
 	std::map<time_t, double>::iterator dbIt;
-
-	std::cout << "size: " << this->input.size() << '\n';
-	for (std::map<time_t, double>::iterator it = this->input.begin(); it != this->input.end(); *it++) {
-
-		dbIt = this->db.find(it->first);
+	getline(inputFile, line);
+	while(getline(inputFile, line)) {
+		pos = line.find("|");
+		if (pos == -1) {
+			std::cerr << "invalid format\n";
+			continue;
+		}
+		date = parseDate(line.substr(0, pos).c_str());
+		dbIt = this->db.find(date);
+		btcN = atof(line.substr(pos + 1).c_str());
+		if (parseNumber(btcN) < 0){
+			continue;
+		}
 		if (dbIt != this->db.end()) {
-			std::cout << "actual value: " << dbIt->second * it->second << '\n';
+			std::cout << "actual value: " << dbIt->second * btcN << '\n';
 			continue;
 		}
 		
-		dbIt = this->db.lower_bound(it->first);
+		dbIt = this->db.lower_bound(date);
 		if (dbIt == this->db.begin()) {
-			std::cerr << "date to low\n";
+			std::cerr << "date too low\n";
 			continue ;
 		}
 		dbIt--;
-		std::cout << "value: " << dbIt->second * it->second << '\n';
+		std::cout << "value: " << dbIt->second * btcN << '\n';
 	}
 	// std::cout << "db: " << this->db[key] * atof(value.c_str()) << '\n';
 }

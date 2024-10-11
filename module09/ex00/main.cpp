@@ -2,7 +2,7 @@
 #include <iostream>
 
 int main(int argc, char **argv) { 
-	BitcoinExchange btc(argv[1]);
+	BitcoinExchange btc;
 	std::ifstream inputFile;
 	std::string		line;
 
@@ -17,7 +17,7 @@ int main(int argc, char **argv) {
 		return 0;
 	}
 
-	btc.printValue();
+	btc.printValue(inputFile);
 
 	return 0;
 }
