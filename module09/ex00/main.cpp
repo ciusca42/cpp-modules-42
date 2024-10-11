@@ -2,7 +2,7 @@
 #include <iostream>
 
 int main(int argc, char **argv) { 
-	BitcoinExchange btc(DB_PATH);
+	BitcoinExchange btc(argv[1]);
 	std::ifstream inputFile;
 	std::string		line;
 
@@ -16,15 +16,8 @@ int main(int argc, char **argv) {
 		std::cout << "could not open the file\n";
 		return 0;
 	}
-	// getline(inputFile, line);
-	// while (getline(inputFile, line)) {
-	// 	btc.printValue(line);
-	// }
-	btc.printValue("2011-01-03 | 3");
-	btc.printValue("2011-01-03 | 2");
-	btc.printValue("2011-01-03 | 1");
-	btc.printValue("2011-01-03 | 1.2");
-	btc.printValue("2011-01-09 | 1");
+
+	btc.printValue();
 
 	return 0;
 }

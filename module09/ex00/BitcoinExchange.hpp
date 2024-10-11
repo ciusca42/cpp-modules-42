@@ -18,20 +18,19 @@ class BitcoinExchange {
 		BitcoinExchange(const BitcoinExchange & obj);
 		BitcoinExchange & operator=(const BitcoinExchange & obj);
 
-		void printValue(std::string line);
+		void printValue(void);
 
 	private:
-		void setDb(std::ifstream &dbFile);
+		int setMap(std::ifstream &dbFile, std::map<time_t, double> &mp, std::string delim);
 
 		/* don't need maybe */
-		void setInput(std::ifstream &inputfile);
+		int setInput(std::ifstream &inputfile);
 		void tokenizeDate(std::string line, std::string delim, std::map<std::string, double> &mp);
 		std::map<std::string, double> dateInput;
 		/* ---------------- */
 		
-		std::map<time_t, double> db;
-		// time_t	firstDate;
-		
+		std::map<time_t, double> db;	
+		std::map<time_t, double> input;	
 };
 
 #endif
