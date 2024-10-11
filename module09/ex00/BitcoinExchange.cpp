@@ -1,11 +1,7 @@
 #include "BitcoinExchange.hpp"
 #include <climits>
-#include <cstddef>
 #include <cstdlib>
-#include <ctime>
 #include <iostream>
-#include <sstream>
-#include <string>
 
 void trimSpace(std::string &str) {
 	return ;
