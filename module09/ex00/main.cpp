@@ -1,4 +1,5 @@
 #include "BitcoinExchange.hpp"
+#include "colors.hpp"
 #include <iostream>
 
 int main(int argc, char **argv) { 
@@ -7,13 +8,13 @@ int main(int argc, char **argv) {
 	std::string		line;
 
 	if (argc != 2) {
-		std::cout << "Usage: ./btc < input file >\n";
+		std::cout << "\n" << BLUE200 << "Usage: ./btc < input file >\n\n" << RESET;
 		return 0;
 	}
 
 	inputFile.open(argv[1]);
 	if (!inputFile.is_open()) {
-		std::cout << "could not open the file\n";
+		std::cerr << ROSE300 << "\ncould not open the file\n\n" RESET;
 		return 0;
 	}
 

@@ -1,11 +1,14 @@
 #ifndef BITCOINEXCHANGE_HPP
 # define BITCOINEXCHANGE_HPP
 
+
 #include <ctime>
 #include <fstream> // IWYU pragma: keep
 #include <string>
 #include <map>
+#include "colors.hpp" // IWYU pragma: keep
 
+typedef std::map<time_t, float>::iterator iterator;
 
 #define DB_PATH "db/data.csv"
 
@@ -23,11 +26,13 @@ class BitcoinExchange {
 	private:
 		int setDb(std::ifstream &dbFile);
 
-		/* don't need maybe */
-		std::map<std::string, double> dateInput;
-		/* ---------------- */
+		void error(const std::string msg);
+		time_t parseDate(const char *dateSTring);
+		std::string formatDate(time_t time);
+		float parseNumber(std::string line, int pos);
+		void printValidDate(time_t date, float btcN, iterator it);
 		
-		std::map<time_t, double> db;	
+		std::map<time_t, float> db;	
 };
 
 #endif

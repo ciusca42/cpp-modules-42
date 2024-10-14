@@ -1,6 +1,6 @@
-NAME = btc
+NAME = rpn
 
-SRC = main.cpp BitcoinExchange.cpp
+SRC = main.cpp RPN.cpp
 
 CPP = c++
 
@@ -8,14 +8,13 @@ CFLAGS = -Wall -Wextra -Werror -g
 
 C98 = -std=c++98
 
-arg=
-
 all: $(NAME)
 $(NAME): $(SRC)
 	@echo Compiling...
 	$(CPP) $(CFLAGS) $(C98) $(SRC) -o $(NAME)
-	@echo Compilation complete.
-	@echo "========================"
+	@echo "==========================="
+	@echo "|| Compilation complete. ||"
+	@echo "==========================="
 
 clean:
 	rm -f $(NAME)
@@ -23,7 +22,7 @@ clean:
 re: clean all
 
 run: all
-	@./$(NAME) $(arg)
+	@./$(NAME)
 
 val: all
 	@valgrind --leak-check=full --show-leak-kinds=all ./$(NAME)
@@ -31,6 +30,6 @@ val: all
 .SILENT:
 
 .DEFAULT:
-	@echo "Usage: make [ all | clean | re | run | val ]" 
+	@echo "Usage: make [ all | clean | re | run | val ]"
 
 .PHONY: all clean re run val

@@ -1,10 +1,12 @@
 #include "BitcoinExchange.hpp"
+#include "colors.hpp"
 #include <climits>
 #include <cstdlib>
+#include <cstring>
 #include <iostream>
+#include <sstream>
 
 void trimSpace(std::string &str) {
-	return ;
 	while (isspace(str[0]))
 		str.erase(0, 1);
 	while (isspace(str[str.length() - 1]))
@@ -36,7 +38,7 @@ BitcoinExchange &BitcoinExchange::operator=(const BitcoinExchange &obj) {
 	return *this;
 }
 
-time_t parseDate(const char *dateString) {
+time_t BitcoinExchange::parseDate(const char *dateString) {
     struct tm tmStruct = {};  // Initialize to zero to avoid garbage values
     // Parse the date string into the tmStruct
     if (strptime(dateString, "%Y-%m-%d", &tmStruct) == NULL) {
@@ -47,12 +49,14 @@ time_t parseDate(const char *dateString) {
     return mktime(&tmStruct);
 }
 
-std::string dateTime(time_t time) {
+std::string BitcoinExchange::formatDate(time_t time) {
+	std::string dateFormat;
     char buffer[90];
     struct tm* timeinfo = localtime(&time);
-    // Format the date into a strinsecondg
+    // Format the date into a string
     strftime(buffer, sizeof(buffer), "%Y-%m-%d", timeinfo);
-    return std::string(buffer);
+    dateFormat = std::string(buffer);
+	return dateFormat = CYAN200 + dateFormat + RESET;
 }
 
 int BitcoinExchange::setDb(std::ifstream &file) { 
@@ -76,40 +80,77 @@ int BitcoinExchange::setDb(std::ifstream &file) {
 	return 1;
 }
 
-int	parseNumber(double btc) {
+void BitcoinExchange::error(const std::string msg) {
+	std::cerr << ROSE300 << "Error: " << RESET;
+	std::cerr << EMERALD200 << msg << '\n' << RESET;
+}
+
+float	BitcoinExchange::parseNumber(std::string line, int pos) {
+	float				btc;
+	std::string 		value;
+	std::string			date;
+	std::ostringstream	str;
+
+	date = line.substr(0, pos);
+	trimSpace(date);
+	value = line.substr(pos+ 1);
+	trimSpace(value);
+	btc = atof(value.c_str());
+	str << btc;
+	if ((btc == 0 && value.length() > 1)) {
+		error("bad input => " + date);
+		return -1;
+	}
+	if (btc > 1000) {
+		error("number too big");
+		return -1;
+	}
 	if (btc < 0) {
-		std::cerr << "invalid btc numberd\n";
+		error("not a positive number");
 		return -1;
 	}
-	if (btc > INT_MAX) {
-		std::cerr << "btc number too big\n";
-		return -1;
-	}
-	return 0;
+	return btc;
+}
+
+void BitcoinExchange::printValidDate(time_t date, float btcN, iterator dbIt) {
+	std::cout << formatDate(date) << " => " << AMBER300 << btcN << RESET " = " << YELLOW200  << dbIt->second * btcN << '\n' << RESET;
+
 }
 
 void BitcoinExchange::printValue(std::ifstream &inputFile) {
 	std::string		line;
 	time_t			date;
-	double			btcN;
+	float			btcN;
 	int				pos;
+	int				i = 0;
 
-	std::map<time_t, double>::iterator dbIt;
+	iterator dbIt;
 	getline(inputFile, line);
+	if (line != "date | value") {
+		error("missing or invalid header");
+		return ;
+	}
 	while(getline(inputFile, line)) {
+		i++;
+		trimSpace(line);
+		std::cout << GREEN200 << i << ' ' << RESET;
+		if (line == "") {
+			std::cout << "'empty line'\n";
+			continue;
+		}
 		pos = line.find("|");
 		if (pos == -1) {
-			std::cerr << "invalid format\n";
+			error("bad input => " + line);
 			continue;
 		}
 		date = parseDate(line.substr(0, pos).c_str());
 		dbIt = this->db.find(date);
-		btcN = atof(line.substr(pos + 1).c_str());
-		if (parseNumber(btcN) < 0){
+		btcN = parseNumber(line, pos);
+		if (btcN < 0) {
 			continue;
 		}
 		if (dbIt != this->db.end()) {
-			std::cout << "actual value: " << dbIt->second * btcN << '\n';
+			printValidDate(date, btcN, dbIt);
 			continue;
 		}
 		
@@ -119,7 +160,6 @@ void BitcoinExchange::printValue(std::ifstream &inputFile) {
 			continue ;
 		}
 		dbIt--;
-		std::cout << "value: " << dbIt->second * btcN << '\n';
+		printValidDate(date, btcN, dbIt);
 	}
-	// std::cout << "db: " << this->db[key] * atof(value.c_str()) << '\n';
 }
