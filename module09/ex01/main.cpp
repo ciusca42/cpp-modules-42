@@ -1,7 +1,11 @@
 #include "RPN.hpp"
 
-int main(void) {
-	RPN exp("(1 + 2) - 2");
+int main(int argc, char **argv) {
+	RPN exp;
 
-	exp.printResult();
+	if (argc != 2) {
+		std::cerr << "Esplodi\n";
+		return 1;
+	}
+	exp.printResult(argv[1]);
 }

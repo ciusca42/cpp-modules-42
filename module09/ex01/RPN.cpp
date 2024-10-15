@@ -1,12 +1,9 @@
 #include "RPN.hpp"
 #include "colors.hpp"
-#include <cstdlib>
+#include <climits>
 #include <iostream>
 
-
-RPN::RPN(std::string expr): _exprStr(expr) {
-	this->tokenizer();
-};
+RPN::RPN() {};
 
 RPN::~RPN() {};
 
@@ -18,7 +15,6 @@ RPN &RPN::operator=(const RPN &obj) {
 	if (this == &obj)
 		return *this;
 	this->exp = obj.exp;
-	this->_exprStr = obj._exprStr;
 	return *this;
 }
 
@@ -27,39 +23,101 @@ void RPN::err(const std::string msg) {
 	std::cerr << AMBER200 << msg << '\n' << RESET << "\n";
 }
 
-char RPN::isSign(int c) {
+int RPN::isSign(int c) {
 	return (c == '-' || c == '+' || c == '/' || c == '*');
 }
 
-void PrintStack(std::stack<char> s)
+void RPN::printStack()
 {
     int x;
     
-	if (s.empty()) 
+	if (this->exp.empty()) 
         return;     
  
-	x = s.top();
-    s.pop();
-    PrintStack(s);
-	std::cout << static_cast<char>(x) << "\n";
-    s.push(x);
+	x = this->exp.top();
+    this->exp.pop();
+    printStack();
+	std::cout << (x) << "\n";
+    this->exp.push(x);
 }
 
-void RPN::tokenizer() {
-	for (size_t i = 0; i < _exprStr.length(); i++) {
-		if (isspace(_exprStr[i]))
+int RPN::checkValid(std::string str, int i) {
+	if (i == 0)
+		return 1;
+	return isspace(str[i - 1]);
+}
+
+int RPN::tokenizer(std::string exprStr) {
+	for (int i = exprStr.length() - 1; i >= 0; i--) {
+		if (isspace(exprStr[i]))
 			continue;
-		if (isdigit(_exprStr[i]))
-			exp.push(_exprStr[i]);
-		else if (isSign(_exprStr[i]))
-			exp.push((_exprStr[i]));
+
+		if (isdigit(exprStr[i]) && checkValid(exprStr, i)) {
+			exp.push(exprStr[i] - '0');
+		}
+		else if (isSign(exprStr[i]) && checkValid(exprStr, i )) {
+			exp.push((exprStr[i]));
+		}
 		else {
 			err("invalid token");
-			exit(0);
+			return 0;
 		}
 	}
+	return 1;
 }
 
-void RPN::printResult() {
-	PrintStack(this->exp);
+int RPN::performOp(int first, int second, char sign) {
+	long result;
+
+	if (isSign(first) || isSign(second)) {
+		err("invalid syntax expression");
+		exit(1);
+	}
+	switch (sign) {
+		case '+':
+			result =  first + second;
+			break;
+		case '-':
+			result =  first - second;
+			break;
+		case '*':
+			result =  first * second;
+			break;
+		case '/':
+			if (second == 0) {
+				std::cerr << ROSE300 << "\nError: " << AMBER200 << "cannot divide by 0\n\n" RESET;
+				exit(1);
+			}
+			result =  first / second;
+			break;
+	}
+	if (result > INT_MAX || result < INT_MIN) {
+		err("number too big/low");
+		exit(1);
+	}
+	return result;
+}
+
+void RPN::printResult(std::string expr) {
+	// int first, second;
+	char sign;
+	int first, second;
+
+	if (!tokenizer(expr))
+		return ;
+	while (this->exp.size() > 2) {
+		first = this->exp.top();
+		this->exp.pop();
+		second = this->exp.top();
+		this->exp.pop();
+		sign = static_cast<char>(exp.top());
+		this->exp.pop();
+		this->exp.push(performOp(first, second, sign));
+	}
+	if (this->exp.size() == 2) {
+		err("invalid syntax expression");
+		return ;
+	}
+	std::cout << GREEN200 << "Result: " << RESET;
+	std::cout << this->exp.top() << '\n';
 }
