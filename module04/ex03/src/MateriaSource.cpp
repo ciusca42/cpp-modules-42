@@ -43,10 +43,12 @@ void MateriaSource::learnMateria(AMateria *m) {
 }
 
 AMateria* MateriaSource::createMateria(std::string const  &type) {
+	AMateria *created;
 	for (int i = 0; i < this->_nbKnown; i++) {
 		if (type == this->_known[i]->getType()) {
 			std::cout << STONE200 << "Creating... -> " << YELLOW300 << type << '\n' << RESET;
-			return this->_known[i];
+			created = this->_known[i]->clone(); 
+			return created;
 		}
 	}
 	std::cout << INDIGO300 << "Materia not found\n" << RESET;

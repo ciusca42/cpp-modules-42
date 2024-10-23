@@ -33,36 +33,17 @@ int parseInt(void) {
 }
 
 int main(int argc, char **argv) {
-	std::string input, name, dmg;
+	ClapTrap clap("bot");
+	std::cout << '\n';
 
-	while (1) {
-		std::cout << PURPLE300 << "\n\tCreate a ClapTrap\n\n" << RESET;
-		std::cout << STONE300 << "insert the name: " << RESET;
-		getline(std::cin, name);
-		if (name == "") {
-			system("clear");
-			continue;
-		}
-		if (confirmName(name) == 1)
-			break;
+	for (int i = 0; i < 9; i++) {
+		std::cout << LIME200 << "[BOT]\n" RESET;
+		clap.attack("goomba");
+		clap.takeDamage(2);
+		clap.beRepaired(1);
+		std::cout << '\n';
 	}
-	ClapTrap bot(name);
-	std::cout << CYAN400 << "\nSet the damage points\n\n" << RESET;
-	bot.setDmg(parseInt());
-	std::cout << "hello\n";
-	while (1) { 
-		std::cout << ROSE200 << "Insert the action: <attack> | <damage> | <repair> | exit | " RESET;
-		getline(std::cin, input);
-		if (input == "")
-			continue;
-		else if (input == "attack")
-			bot.attack("enemy");
-		else if (input == "damage")
-			bot.takeDamage(parseInt());
-		else if (input == "repair")
-			bot.beRepaired(parseInt());
-		if (input == "exit")
-			break;
-	}
+	std::cout << '\n';
+	return 0;
 	return 0;
 }

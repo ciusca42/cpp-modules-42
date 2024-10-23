@@ -12,7 +12,7 @@ typedef std::map<time_t, float>::iterator iterator;
 
 #define DB_PATH "db/data.csv"
 
-typedef std::map<std::string, double>::iterator iter;
+typedef std::map<std::string, float>::iterator iter;
 
 class BitcoinExchange {
 	public:

@@ -1,6 +1,6 @@
 NAME = span
 
-SRC = 
+SRC = main.cpp Span.cpp
 
 CPP = c++
 

@@ -9,6 +9,7 @@ ScavTrap::ScavTrap( std::string name ): ClapTrap(name) {
 	this->hitPoints = 100;
 	this->attackDmg = 20;
 	this->name = name;
+	this->maxHealth = 100;
 	std::cout << STONE300 << name << RESET << " <-- name [";
 	std::cout << EMERALD400 << "ScavTrap" << RESET << "] destroyed\n";
 }

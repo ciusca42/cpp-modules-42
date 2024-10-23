@@ -11,6 +11,7 @@ FragTrap::FragTrap( std::string name ): ClapTrap(name) {
 	this->name = name;
 	this->hitPoints = 100;
 	this->energyPoints = 100;
+	this->maxHealth = 100;
 	this->attackDmg = 30;
 	
 	std::cout << STONE300 << name << RESET << " <-- name [" << LIME300 << "FragTrap" << RESET << "] created\n"; 

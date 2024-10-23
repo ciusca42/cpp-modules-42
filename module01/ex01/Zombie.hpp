@@ -6,7 +6,7 @@
 class Zombie {
 
 	public:
-		Zombie() {};
+		Zombie();
 		~Zombie();
 		void setName( std::string );
 		void randomChump( std::string name );

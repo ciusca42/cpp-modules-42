@@ -1,6 +1,6 @@
 #include "ClapTrap.hpp"
 
-ClapTrap::ClapTrap(): name("none"), hitPoints(10), energyPoints(10), attackDmg(0) {}
+ClapTrap::ClapTrap(): name("none"), hitPoints(10), energyPoints(10), attackDmg(0), maxHealth(10) {}
 
 ClapTrap::ClapTrap( std::string name ): name(name), hitPoints(10), energyPoints(10), attackDmg(0) {}
 
@@ -35,9 +35,7 @@ void ClapTrap::takeDamage( unsigned int amount ) {
 		diePrint();
 		return;
 	}
-	if (this->energyPoints <= 0) {
-		return ;
-	}
+	
 	std::cout << ORANGE400 << this->name << RESET << " ";
 	std::cout << "Takes: " << EMERALD400 << amount << RESET;
 	std::cout << " of damage\n" << RESET;
@@ -60,8 +58,8 @@ void ClapTrap::beRepaired ( unsigned int amount ) {
 	}
 	this->energyPoints--;
 	this->hitPoints += amount;
-	if (this->hitPoints > 10)
-		this->hitPoints = 10;
+	if (this->hitPoints > maxHealth)
+		this->hitPoints = maxHealth;
 	std::cout << ORANGE400 << "Repairing... " <<  RESET << "adding: " << VIOLET400 << amount << RESET;
 	std::cout << " hitPoints\n";
 	std::cout << STONE300 << "Current hitPoints: " << LIME300 << this->hitPoints << '\n' << RESET;

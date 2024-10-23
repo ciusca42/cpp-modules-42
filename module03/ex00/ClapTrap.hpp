@@ -19,6 +19,7 @@ class ClapTrap {
 		int hitPoints;
 		int energyPoints;
 		int attackDmg;
+		int maxHealth;
 };
 
 #endif

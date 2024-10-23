@@ -2,15 +2,35 @@
 #include "ScavTrap.hpp"
 
 int main(void) {
-	FragTrap frag("carlos");
-	ScavTrap scav("asteryx");
+	ClapTrap clap("bot");
+	ScavTrap scav("superbot");
+	FragTrap frag("fragbot");
 
 	std::cout << '\n';
-	
+	std::cout << LIME200 << "[SUPERBOT] [SPECIAL]\n" RESET;
 	scav.guardGate();
+	std::cout << '\n';
+	std::cout << LIME200 << "[FRAGBOT] [SPECIAL]\n" RESET;
 	frag.highFiveGuys();
-	frag.attack("ciccio");
+	std::cout << '\n';
 
+	for (int i = 0; i < 10; i++) {
+		std::cout << LIME200 << "[BOT]\n" RESET;
+		clap.attack("goomba");
+		clap.takeDamage(2);
+		clap.beRepaired(1);
+		std::cout << '\n';
+		std::cout << LIME200 << "[SUPERBOT]\n" RESET;
+		scav.attack("superGoomba");
+		scav.takeDamage(20);
+		scav.beRepaired(10);
+		std::cout << '\n';
+		std::cout << LIME200 << "[FRAGBOT]\n" RESET;
+		frag.attack("coopa");
+		frag.takeDamage(20);
+		frag.beRepaired(10);
+		std::cout << '\n';
+	}
 	std::cout << '\n';
 	return 0;
 }

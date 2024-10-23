@@ -9,9 +9,9 @@ SRC = $(addprefix src/, $(CPP_FILES))
 
 CPP = c++
 
-FLAGS = -Wall -Wextra -Werror -g 
+FLAGS = -Wall -Wextra -Werror
 
-C98 = -std=c++98
+C98 = -std=c++98 -g
 
 BUILD_DIR = build
 
@@ -41,7 +41,7 @@ run: all
 	./$(NAME)
 
 val: all
-	valgrind ./$(NAME)
+	valgrind --leak-check=full ./$(NAME)
 
 .SILENT:
 

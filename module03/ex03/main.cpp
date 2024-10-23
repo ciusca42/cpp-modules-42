@@ -1,17 +1,15 @@
 #include "DiamondTrap.hpp"
 
 int main(void) {
-	FragTrap frag("carlos");
-	ScavTrap scav("asteryx");
 	DiamondTrap diamond("obelix");
 
 	std::cout << '\n';
 	
-	scav.guardGate();
-	frag.highFiveGuys();
-	frag.attack("ciccio");
-	diamond.attack("wall");
-	diamond.highFiveGuys();
+	diamond.whoami();
+	std::cout << '\n';
+	diamond.attack("LaPira");
+	diamond.takeDamage(2);
+	diamond.beRepaired(2);
 
 	std::cout << '\n';
 	return 0;

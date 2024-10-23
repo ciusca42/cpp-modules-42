@@ -14,6 +14,10 @@ Character::Character(void): _name("None"), _nbMateria(0) {
 }
 
 Character::~Character(void) {
+	for (int i = 0; i < 3; i++) {
+		if (this->_inventory[i] != NULL)
+			delete this->_inventory[i];
+	}
 	debugPrint("Character", 1);
 }
 
@@ -50,9 +54,21 @@ void Character::equip(AMateria *m) {
 	this->_inventory[this->_nbMateria++] = m;
 }
 
+AMateria *Character::saveMateria(int idx) {
+	if (idx < 0 || idx > 4) {
+		std::cerr << INDIGO300 << "Ivalid index\n" RESET;
+		return NULL;
+	}
+	return this->_inventory[idx];
+}
+
 void Character::unequip(int idx) {
 	if (idx > 4 || idx < 0 || idx >= this->_nbMateria) {
 		std::cout << INDIGO300 << "Index out of range\n" RESET;
+		return ;
+	}
+	if (this->_inventory[idx] == NULL) {
+		std::cout << INDIGO300 << "No items to drop at this inded\n" RESET;
 		return ;
 	}
 	std::cout << EMERALD200 << this->_inventory[idx]->getType() << ROSE200 << ": Unequiped!\n" << RESET;
