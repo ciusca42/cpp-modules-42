@@ -14,6 +14,7 @@ $(NAME): $(SRC)
 	@echo Compiling...
 	$(CPP) $(CFLAGS) $(C98) -D DEBUG=$(DBG) $(SRC) -o $(NAME)
 	@echo Compilation complete.
+	@echo "===================="
 
 clean:
 	rm -f $(NAME)

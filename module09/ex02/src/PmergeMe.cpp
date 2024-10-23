@@ -16,13 +16,5 @@ PmergeMe &PmergeMe::operator=(const PmergeMe &obj) {
 	return *this;
 }
 
-void PmergeMe::initArr(const int *arr, const int n) {
-	for (int i = 0; i < n; i++) {
-		this->vec.push_back(arr[i]);
-		this->deq.push_back(arr[i]);
-	}
-	this->len = n;
-}
-
 
 
