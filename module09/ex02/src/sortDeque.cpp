@@ -1,6 +1,5 @@
-// #include "../classes/PmergeMe.hpp"
-// #include <cmath>
-// #include <cstdlib>
+#include "../classes/PmergeMe.hpp"
+#include <algorithm>
 
 // std::deque<long> jacobIndex(std::deque<long> pend) {
 // 	std::deque<long>	jacob;
@@ -51,30 +50,79 @@
 // 	std::cout << '\n';
 // }
 
-// void PmergeMe::sortDeque(int *arr , int N) {
-// 	int					struggler;
-// 	int 				j = 0;
-// 	std::pair<int, int> *pairs;
+std::deque<int> findJacob(std::deque<int> pend) {
+	std::deque<int>	jacob;
+	long				j, j2;
+	int 				prev = 1, prev2 = 0;
 
-// 	// parseArr(int *arr, int N);
-// 	this->len = N;
-// 	if (this->len % 2 == 0) {
-// 		struggler = -1;
-// 	}
-// 	else {
-// 		struggler = arr[this->len - 1];
-// 		len--;
-// 	}
-// 	pairs = new std::pair<int, int>[len / 2];
-// 	for (size_t i = 0; i < len / 2; i++) {
-// 		pairs[i].first = arr[j];
-// 		pairs[i].second = arr[j + 1];
-// 		j+=2;
-// 	}
+	jacob.push_back(0);
+	jacob.push_back(1);
+	for (size_t i = 2; i < pend.size() + 1; i++) {
+		j = prev;
+		j2 =  2 * (prev2);
+		jacob.push_back(j + j2);
 
-// 	findBigger(pairs, len / 2);
-// 	insertionSort(pairs, len / 2, 1);	
-// 	deqFinalSort(pairs, struggler);
+		for (int i = (j + j2) - 1; i > prev; i--) {
+			jacob.push_back(i);
+		}
+		prev2 = prev;
+		prev = j + j2;
+	}
+	
+	jacob.erase(jacob.begin(), jacob.begin() + 3);
+	// std::cout << "--- jacob --- \n";
+	// for (size_t i = 0; i < jacob.size(); i++) {
+	// 	std::cout << jacob[i] << " ";
+	// }
+	// std::cout << '\n';
+	return jacob;
+}
 
-// 	delete[] pairs;
-// }
+void PmergeMe::deqFinalSort(std::pair<int, int> *pairs) {
+	std::deque<int> pend, jacob;
+	std::deque<int>::iterator it;
+	int				index;
+
+	for (size_t i = 0; i < this->len / 2; i++) {
+		deq.push_back(pairs[i].first);
+		pend.push_back(pairs[i].second);
+	}
+	
+	this->deq.insert(deq.begin(), pend[0]);
+	jacob = findJacob(pend);
+	for (size_t i = 0; i < pend.size(); i++) {
+		index = jacob[i] - 1;
+		// std::cout << jacob[i] << '\n';
+		if (index >= (long)pend.size())
+			continue;
+		it = std::lower_bound(this->deq.begin(), this->deq.end(), pend[index]  - 1);
+		this->deq.insert(it, pend[index]);
+	}
+	if (struggler != -1) {
+		it = std::lower_bound(this->deq.begin(), this->deq.end(), struggler);
+		this->deq.insert(it, struggler);
+	}
+	for (size_t i = 0; i < this->vec.size(); i++) {
+		std::cout << this->deq[i] << " ";
+	}
+	std::cout << '\n';
+}
+
+void PmergeMe::sortDeque() {
+	int 				j = 0;
+	std::pair<int, int> *pairs;
+
+	// parseArr(int *arr, int N);
+	pairs = new std::pair<int, int>[len / 2];
+	for (size_t i = 0; i < len / 2; i++) {
+		pairs[i].first = arr[j];
+		pairs[i].second = arr[j + 1];
+		j+=2;
+	}
+
+	findBigger(pairs, len / 2);
+	mergeSort(pairs, 0, len / 2 -1);	
+	deqFinalSort(pairs);
+
+	delete[] pairs;
+}

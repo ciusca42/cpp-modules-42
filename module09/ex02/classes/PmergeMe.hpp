@@ -14,25 +14,28 @@
 class PmergeMe {
 	private:
 		std::vector<long>	vec;
-		std::deque<long>	deq;
+		std::deque<int>		deq;
+
+		int					struggler;
+		const int			*arr;
 		size_t				len;
 
 		
-		void vecFinalSort(std::pair<int, int> *pairs, int struggler);
-		void deqFinalSort(std::pair<int, int> *pairs, int struggler);
+		void vecFinalSort(std::pair<int, int> *pairs);
+		void deqFinalSort(std::pair<int, int> *pairs);
 
-		int isSorted(std::pair<int, int> *pairs, size_t n);
 		void findBigger(std::pair<int, int> *pairs, size_t n);
 		void printPairs(std::pair<int, int> *pairs, size_t n);
-		void insertionSort(std::pair<int, int> *pairs, size_t n, int curr);
+		void mergeSort(std::pair<int, int> *pairs, int left, int righ);
+		void merge(std::pair<int, int> *pairs, int left, int mid, int right);
 	public:
 		PmergeMe();
 		~PmergeMe();
 		PmergeMe(const PmergeMe & obj);
 		PmergeMe & operator=(const PmergeMe & obj);
-
-		void sortVector(int *arr, int N);
-		void sortDeque(int *arr, int N);
+		void setArr(const int *arr,const int N);
+		void sortVector();
+		void sortDeque();
 };
 
 #endif

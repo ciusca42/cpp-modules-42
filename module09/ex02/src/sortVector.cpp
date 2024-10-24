@@ -1,10 +1,4 @@
 #include "../classes/PmergeMe.hpp"
-#include <algorithm>
-#include <cmath>
-#include <cstddef>
-#include <cstdlib>
-#include <utility>
-#include <vector>
 
 void PmergeMe::printPairs(std::pair<int, int> *pairs, size_t n) {
 	for (size_t i = 0; i < n; i++) {
@@ -27,52 +21,85 @@ void PmergeMe::findBigger(std::pair<int, int> *pairs, size_t n) {
 	}
 }
 
-int PmergeMe::isSorted(std::pair<int, int> *pairs, size_t n) {
-	for (size_t i = 0; i < n -1; i++) {
-		if (!(pairs[i].first < pairs[i + 1].first))
-			return 0;
+
+void PmergeMe::merge(std::pair<int, int> *pairs, int left, int mid, int right) {
+
+	int len = mid - left + 1;
+	int len2 = right - mid;
+	std::pair<int, int> L[len], R[len2];
+	int i = 0, j = 0;
+	int k = left;
+
+	// printPairs(pairs, this->len / 2);
+	for (int i = 0; i < len; i++) {
+		L[i] = pairs[left + i];
 	}
-	return 1;
+	for (int i = 0; i < len2; i++) {
+		R[i] = pairs[mid + 1 + i];
+	}
+
+	while (i < len && j < len2) {
+		if (L[i].first <= R[j].first) {
+			pairs[k] = L[i];
+			i++;
+		}
+		else {
+			pairs[k] = R[j];
+			j++;
+		}
+		k++;
+	}
+
+	while (i < len) {
+		pairs[k] = L[i];
+		i++;
+		k++;
+	}
+	while (j < len2) {
+		pairs[k] = R[j];
+		j++;
+		k++;
+	}
+
 }
 
-void PmergeMe::insertionSort(std::pair<int, int> *pairs, size_t n, int curr) {
+void PmergeMe::mergeSort(std::pair<int, int> *pairs, int left, int right) {
+	int mid;
 
-		int j;
-		int key;
-		std::pair<int, int> temp;
-
-		if (isSorted(pairs, n))
-			return;
-		key = pairs[curr].first;
-		j = curr - 1;
-		while (j >= 0 && pairs[j].first > key) {
-			temp = pairs[j + 1];
-			pairs[j + 1] = pairs[j];
-			pairs[j] = temp;
-			j = j -1;
-		}
-		pairs[j + 1].first = key;
-		insertionSort(pairs, n, ++curr);
+	if (left >= right)
+		return;
+	mid =  left + (right - left) / 2;
+	mergeSort(pairs, left, mid);
+	mergeSort(pairs, mid + 1, right);
+	merge(pairs, left, mid, right);
 }
 
 
 std::vector<long> jacobIndex(std::vector<long> pend) {
 	std::vector<long>	jacob;
 	long				j, j2;
-	long				prev = 1;
+	int 				prev = 1, prev2 = 0;
 
 	jacob.push_back(0);
 	jacob.push_back(1);
 	for (size_t i = 2; i < pend.size() + 1; i++) {
-		j = jacob[i -1];
-		j2 =  2 * (jacob[i - 2]);
+		j = prev;
+		j2 =  2 * (prev2);
 		jacob.push_back(j + j2);
+
 		for (int i = (j + j2) - 1; i > prev; i--) {
 			jacob.push_back(i);
 		}
+		prev2 = prev;
 		prev = j + j2;
 	}
+	
 	jacob.erase(jacob.begin(), jacob.begin() + 3);
+	// std::cout << "--- jacob --- \n";
+	// for (size_t i = 0; i < jacob.size(); i++) {
+	// 	std::cout << jacob[i] << " ";
+	// }
+	// std::cout << '\n';
 	return jacob;
 }
 
@@ -89,7 +116,7 @@ void printPendMain(std::vector<long> main, std::vector<long> pend) {
 	std::cout << '\n';
 }
 
-void PmergeMe::vecFinalSort(std::pair<int, int> *pairs, int struggler) {
+void PmergeMe::vecFinalSort(std::pair<int, int> *pairs) {
 	std::vector<long> pend, jacob;
 	std::vector<long>::iterator it;
 	(void)struggler;
@@ -102,10 +129,10 @@ void PmergeMe::vecFinalSort(std::pair<int, int> *pairs, int struggler) {
 	
 	vec.insert(vec.begin(), pend[0]);
 	jacob = jacobIndex(pend);
-	for (size_t i = 0; i < jacob.size(); i++) {
+	for (size_t i = 0; i < pend.size(); i++) {
 		index = jacob[i] - 1;
 		// std::cout << jacob[i] << '\n';
-		if (index >= (long)jacob.size())
+		if (index >= (long)pend.size())
 			continue;
 		it = std::lower_bound(this->vec.begin(), this->vec.end(), pend[index]  - 1);
 		this->vec.insert(it, pend[index]);
@@ -120,20 +147,10 @@ void PmergeMe::vecFinalSort(std::pair<int, int> *pairs, int struggler) {
 	std::cout << '\n';
 }
 
-void PmergeMe::sortVector(int *arr , int N) {
-	int					struggler;
+void PmergeMe::sortVector() {
 	int 				j = 0;
 	std::pair<int, int> *pairs;
 
-	// parseArr(int *arr, int N);
-	this->len = N;
-	if (this->len % 2 == 0) {
-		struggler = -1;
-	}
-	else {
-		struggler = arr[this->len - 1];
-		len--;
-	}
 	pairs = new std::pair<int, int>[len / 2];
 	for (size_t i = 0; i < len / 2; i++) {
 		pairs[i].first = arr[j];
@@ -142,8 +159,10 @@ void PmergeMe::sortVector(int *arr , int N) {
 	}
 
 	findBigger(pairs, len / 2);
-	insertionSort(pairs, len / 2, 1);	
-	vecFinalSort(pairs, struggler);
+	// printPairs(pairs, len /2);
+	mergeSort(pairs, 0, len / 2 -1);	
+	// printPairs(pairs, len /2);
+	vecFinalSort(pairs);
 
 	delete[] pairs;
 }
