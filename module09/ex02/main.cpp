@@ -52,7 +52,7 @@ int main(int argc, char **argv) {
     size_t N;
     struct timeval tp_start, tp_end;
     long  us_vector, us_deque;
-
+    std::cout << argc << '\n';
     if (argc == 1) {
         std::cout << CYAN300 << "\nUsage:" << PINK200 << "./PmergeMe < n1 > < n2 > ...\n" << RESET;
         return 0;

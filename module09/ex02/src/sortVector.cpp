@@ -120,6 +120,16 @@ void printPendMain(std::vector<long> main, std::vector<long> pend) {
 	std::cout << '\n';
 }
 
+void printVec(std::vector<long> vec) {
+	std::cout << "-----------VECTOR--------------\n";
+	for (size_t i = 0; i < vec.size(); i++) {
+		std::cout << vec[i] << " ";
+	}
+	std::cout << "\n";
+}
+
+
+
 void PmergeMe::vecFinalSort(std::pair<int, int> *pairs) {
 	std::vector<long> pend, jacob;
 	std::vector<long>::iterator it;
@@ -133,12 +143,16 @@ void PmergeMe::vecFinalSort(std::pair<int, int> *pairs) {
 	
 	vec.insert(vec.begin(), pend[0]);
 	jacob = jacobIndex(pend);
+	printVec(jacob);
+	printVec(vec);
+	printVec(pend);
+
 	for (size_t i = 0; i < jacob.size(); i++) {
 		index = jacob[i] - 1;
 		// std::cout << jacob[i] << '\n';
 		if (index >= (long)pend.size())
 			continue;
-		it = std::lower_bound(this->vec.begin(), this->vec.end(), pend[index]  - 1);
+		it = std::lower_bound(this->vec.begin(), this->vec.end(), pend[index]);
 		this->vec.insert(it, pend[index]);
 	}
 	if (struggler != -1) {

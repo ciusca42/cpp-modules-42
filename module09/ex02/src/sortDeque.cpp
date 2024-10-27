@@ -93,6 +93,7 @@ std::deque<int> findJacob(std::deque<int> pend) {
 	return jacob;
 }
 
+
 void PmergeMe::deqFinalSort(std::pair<int, int> *pairs) {
 	std::deque<int> pend, jacob;
 	std::deque<int>::iterator it;
@@ -105,12 +106,14 @@ void PmergeMe::deqFinalSort(std::pair<int, int> *pairs) {
 	
 	this->deq.insert(deq.begin(), pend[0]);
 	jacob = findJacob(pend);
+	
+	// this->deq.insert(deq.begin(), pend[0]);
 	for (size_t i = 0; i < jacob.size(); i++) {
 		index = jacob[i] - 1;
 		// std::cout << jacob[i] << '\n';
 		if (index >= (long)pend.size())
 			continue;
-		it = std::lower_bound(this->deq.begin(), this->deq.end(), pend[index]  - 1);
+		it = std::lower_bound(this->deq.begin(), this->deq.end() -1, pend[index]);
 		this->deq.insert(it, pend[index]);
 	}
 	if (struggler != -1) {
