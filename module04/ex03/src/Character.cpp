@@ -68,7 +68,7 @@ void Character::unequip(int idx) {
 		return ;
 	}
 	if (this->_inventory[idx] == NULL) {
-		std::cout << INDIGO300 << "No items to drop at this inded\n" RESET;
+		std::cout << INDIGO300 << "No items to drop at this index\n" RESET;
 		return ;
 	}
 	std::cout << EMERALD200 << this->_inventory[idx]->getType() << ROSE200 << ": Unequiped!\n" << RESET;
@@ -78,6 +78,10 @@ void Character::unequip(int idx) {
 void Character::use(int idx, ICharacter &target) {
 	if (idx > 4 || idx < 0 || idx >= this->_nbMateria) {
 		std::cout << INDIGO300 << "Index out of range\n" RESET;
+		return ;
+	}
+	if (!this->_inventory[idx]) {
+		std::cout << INDIGO300 << "No materia at this index\n" RESET;
 		return ;
 	}
 	this->_inventory[idx]->use(target);

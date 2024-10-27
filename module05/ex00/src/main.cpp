@@ -7,8 +7,11 @@ int main(void) {
 	Bureaucrat buro("ciuschi", 3);
 
 	std::cout << '\n';
+
 	buro.decrementGrade();
+
 	std::cout << buro << '\n';
+
 	for (int i = 0; i < 4; i++) {
 		try {
 			buro.incrementGrade();

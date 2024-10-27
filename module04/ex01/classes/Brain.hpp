@@ -10,9 +10,6 @@ class Brain {
 		Brain(const Brain &obj);
 		Brain & operator=(const Brain &obj);
 
-		void setIdea(std::string idea);
-		void getRandomIdea(void);
-
 	private:
 		int nIdeas;
 		std::string _ideas[100];

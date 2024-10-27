@@ -119,7 +119,7 @@ void printPendMain(std::vector<long> main, std::vector<long> pend) {
 void PmergeMe::vecFinalSort(std::pair<int, int> *pairs) {
 	std::vector<long> pend, jacob;
 	std::vector<long>::iterator it;
-	(void)struggler;
+
 	int				index;
 
 	for (size_t i = 0; i < this->len / 2; i++) {

@@ -11,27 +11,35 @@ void debugPrint(std::string name, int type) {
 	std::cout << EMERALD300 << name << RESET << types[type];
 }
 
+#define TOT 4
+
 int main()
 {
-	std::cout << YELLOW200 << "\n---------COSTRUCTORS--------\n" << RESET;
-	const Animal* meta = new Animal();
-	const Animal* j = new Dog();
-	const Animal* i = new Cat();
+	std::cout << YELLOW300 << "\n---------COSTRUCTORS--------\n" << RESET;
+	Animal *animals[TOT];
 
-	std::cout << YELLOW200 << "\n---------TYPES--------\n" << RESET;
-	std::cout << i->getType() << " " << std::endl;
-	std::cout << j->getType() << " " << std::endl;
-	std::cout << meta->getType() << " " << std::endl;
+	for (int i = 0; i < TOT; i++) {
+		if (i < TOT / 2)
+			animals[i] = new Dog();
+		else
+			animals[i] = new Cat();
+	}
 
-	std::cout << YELLOW200 << "\n---------MEMBER FUNCTIONS--------\n" << RESET;
-	i->makeSound(); //will output the cat sound!
-	j->makeSound();
-	meta->makeSound();
+	std::cout << YELLOW300 << "\n---------TYPES--------\n" << RESET;
+	for (int i = 0; i < TOT; i++) {
+		std::cout << ROSE200 << i << ": " << RESET;
+		std:: cout << animals[i]->getType() << '\n';
+	}
 
-	std::cout << YELLOW200 << "\n---------DESTRUCTORS--------\n" << RESET;
-	delete i;
-	delete j;
-	delete meta;
+	std::cout << YELLOW300 << "\n---------MEMBER FUNCTIONS--------\n" << RESET;
+	for (int i = 0; i < TOT; i++) {
+		std::cout << ROSE200 << i << ": ";
+		animals[i]->makeSound();
+	}
+	std::cout << YELLOW300 << "\n---------DESTRUCTORS--------\n" << RESET;
+	
+	for (int i = 0; i < TOT; i++)
+		delete animals[i];
 
 	return 0;
 }

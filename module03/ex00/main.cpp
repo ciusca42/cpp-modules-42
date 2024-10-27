@@ -1,5 +1,7 @@
 #include "ClapTrap.hpp"
+#include <algorithm>
 #include <string>
+#include <vector>
 
 int confirmName(std::string name) {
 	std::string action;

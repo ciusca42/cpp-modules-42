@@ -19,7 +19,7 @@ Cat::~Cat() {
 }
 
 Cat::Cat(const Cat &obj) {
-	*this = obj;
+	this->_brain = new Brain(*obj._brain);
 }
 
 Cat & Cat::operator=(const Cat &obj) {

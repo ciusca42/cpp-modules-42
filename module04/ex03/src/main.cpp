@@ -41,6 +41,7 @@ int main(void)
 
 	ground[curr++] = me->saveMateria(0);
 	me->unequip(0);
+	me->use(0, *bob);
 
 	// for (int i = 0; i < 4; i++)
 	// {
@@ -52,8 +53,9 @@ int main(void)
 	std::cout << '\n';
 	/* me->use(0, *bob);
 	me->use(1, *bob); */
-	for (int i = curr ; i >= 0; i--) {
-		delete ground[i];
+	for (int i = curr - 1; i >= 0; i--) {
+		if (ground[i])
+			delete ground[i];
 	}
 
 	std::cout << YELLOW300 << "\n---------DESTRUCTORS--------\n" << RESET;

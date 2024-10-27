@@ -16,7 +16,7 @@ Dog::~Dog() {
 }
 
 Dog::Dog(const Dog &obj) {
-	*this = obj;
+	this->_brain = new Brain(*obj._brain);
 }
 
 Dog & Dog::operator=(const Dog &obj) {

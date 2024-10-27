@@ -6,6 +6,22 @@ ClapTrap::ClapTrap( std::string name ): name(name), hitPoints(10), energyPoints(
 
 ClapTrap::~ClapTrap() {}
 
+ClapTrap::ClapTrap(const ClapTrap &obj) {
+	*this = obj;
+}
+
+ClapTrap &ClapTrap::operator=(const ClapTrap &obj) {
+	if (this == &obj) {
+		return *this;
+	}
+	this->attackDmg = obj.attackDmg;
+	this->hitPoints = obj.hitPoints;
+	this->energyPoints = obj.hitPoints;
+	this->name = obj.name;
+	this->maxHealth = obj.maxHealth;
+	return *this;
+}
+
 void diePrint( void ) {
 	std::cout << ROSE200 << "You Died!" STONE400 << " You cannot perform actions when you are dead.\n" RESET;
 }

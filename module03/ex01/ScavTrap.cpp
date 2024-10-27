@@ -18,6 +18,10 @@ ScavTrap::~ScavTrap( void ) {
 	std::cout << "ScavTrap destructor called\n";
 }
 
+ScavTrap::ScavTrap(const ScavTrap &obj) {
+	*this = obj;
+}
+
 ScavTrap& ScavTrap::operator=(const ScavTrap &obj) {
 	this->energyPoints = obj.energyPoints;
 	this->hitPoints = obj.hitPoints;
