@@ -87,7 +87,11 @@ std::vector<long> jacobIndex(std::vector<long> pend) {
 		j2 =  2 * (prev2);
 		jacob.push_back(j + j2);
 
-		for (int i = (j + j2) - 1; i > prev; i--) {
+		for (size_t i = (j + j2) - 1; i > (size_t)prev; i--) {
+			if (i + 1 == pend.size()) {
+				jacob.erase(jacob.begin(), jacob.begin() + 3);
+				return jacob;
+			}
 			jacob.push_back(i);
 		}
 		prev2 = prev;
@@ -129,7 +133,7 @@ void PmergeMe::vecFinalSort(std::pair<int, int> *pairs) {
 	
 	vec.insert(vec.begin(), pend[0]);
 	jacob = jacobIndex(pend);
-	for (size_t i = 0; i < pend.size(); i++) {
+	for (size_t i = 0; i < jacob.size(); i++) {
 		index = jacob[i] - 1;
 		// std::cout << jacob[i] << '\n';
 		if (index >= (long)pend.size())
@@ -141,8 +145,16 @@ void PmergeMe::vecFinalSort(std::pair<int, int> *pairs) {
 		it = std::lower_bound(this->vec.begin(), this->vec.end(), struggler);
 		this->vec.insert(it, struggler);
 	}
-	for (size_t i = 0; i < this->vec.size(); i++) {
-		std::cout << this->vec[i] << " ";
+
+}
+
+void formatPrint(std::vector<long> vec) {
+	int count = 0;
+	for (size_t i = 0; i < vec.size(); i++) {
+		if (count == 4)
+			break;
+		std::cout << vec[i] << " ";
+		count++;
 	}
 	std::cout << '\n';
 }
@@ -163,6 +175,6 @@ void PmergeMe::sortVector() {
 	mergeSort(pairs, 0, len / 2 -1);	
 	// printPairs(pairs, len /2);
 	vecFinalSort(pairs);
-
+	formatPrint(vec);
 	delete[] pairs;
 }
