@@ -36,6 +36,8 @@ class PmergeMe {
 		void setArr(const int *arr,const int N);
 		void sortVector();
 		void sortDeque();
+		std::vector<long>	getVec(void) const;
+		std::deque<int> 	getDeq(void) const;
 };
 
 #endif

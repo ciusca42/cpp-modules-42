@@ -29,4 +29,10 @@ void PmergeMe::setArr(const int *arr, const int N) {
 	}
 }
 
+std::deque<int> PmergeMe::getDeq(void) const {
+	return this->deq;
+}
 
+std::vector<long> PmergeMe::getVec(void) const {
+	return this->vec;
+}

@@ -8,6 +8,8 @@ CFLAGS = -Wall -Wextra -Werror -g
 
 C98 = -std=c++98
 
+ARG=
+
 all: $(NAME)
 
 $(NAME): $(SRC)
@@ -18,14 +20,16 @@ $(NAME): $(SRC)
 
 clean:
 	rm -f $(NAME)
+	rm before.log
+	rm after.log
 
 re: clean all
 
 run: all
-	@./$(NAME)
+	@./$(NAME) $(ARG)
 
 val: all
-	@valgrind --leak-check=full --show-leak-kinds=all ./$(NAME)
+	@valgrind --leak-check=full --show-leak-kinds=all ./$(NAME) $(ARG)
 
 # Use the debug target to override the DEBUG variable
 debug: 

@@ -5,43 +5,97 @@
 #include <cstdlib>
 #include <cstring>
 #include <ctime>
+#include <fstream>
+#include <iomanip>
 #include <unistd.h> 
 #include <sys/time.h>
 
+void createLogFile(std::string filename, std::vector<long> arr) {
+	std::ofstream out;
+
+	out.open(filename.c_str());
+
+	if (!out.is_open()) {
+		std::cout << ROSE300 << "failed to create log file!\n" RESET;
+		return ;
+	}
+
+	for (size_t i = 0; i < arr.size(); i++) {
+		out << arr[i];
+		if (i % 10 == 0 && i != 0) 
+			out << '\n';
+		else
+			out << " ";
+	}
+	out.close();
+}
+
+void formatPrint(int *arr, int N, std::vector<long> vec) {
+	size_t count = 0;
+    int     countArr = 0;
+
+    
+    std::cout << VIOLET400 << "BEFORE -> " RESET;
+    for (int i = 0; i < N; i++) {
+        if (countArr == 6)
+            break;
+        std::cout << VIOLET200 << arr[i] << " " RESET;
+        countArr++;
+    }
+    if (count < vec.size()) {
+		std::cout << "[...] ";
+		createLogFile("before.log", vec);
+		std::cout << STONE400 << " => log file created '" << LIME300 << "before.log" << STONE300 "'" RESET;
+	}
+    std::cout << VIOLET400 << "\nAFTER  -> " RESET;
+	for (size_t i = 0; i < vec.size(); i++) {
+		if (count == 6)
+			break;
+		std::cout << VIOLET200 << vec[i] << " " RESET;
+		count++;
+	}
+	if (count < vec.size()) {
+		std::cout << "[...] ";
+		createLogFile("after.log", vec);
+		std::cout << STONE400 << " => log file created '" << LIME300 << "after.log" << STONE300 "'" RESET;
+	}
+	std::cout << '\n';
+}
+
 void error(std::string msg, std::string elem) {
 	std::cerr << ROSE300 << "Error: " << RESET;
-	std::cerr << EMERALD300 << msg << " ";
-	std::cerr << LIME300 << elem << '\n';
+	std::cerr << EMERALD300 << msg << ": " RESET << "'";
+	std::cerr << LIME300 << elem << RESET "'" << '\n' << '\n';
+}
+
+char firstOcc(std::string str) {
+
+    while (isspace(str[0]))
+        str.erase(0);
+    return str[0];
 }
 
 int *parseInput(int argc, char **argv, size_t *N) {
 	int 	*arr;
-	// int		num;
+	int		num;
 
-	// for (int i = 1; i < argc; i++) {
-	// 	num = atoi(argv[i]);
-	// 	if (num == 0 && argv[i][0] != '0') {
-	// 		error("Invalid Number", argv[i]);
-	// 		return 0;
-	// 	}
-	// 	if (num < 0) { 
-	// 		error("Invalid Number", argv[i]);
-	// 		return 0;
-	// 	}
-	// }
-	// for (int i = 1; i < argc; i++) {
-	// 	for (int j = 1; j < argc; j++) {
-	// 		// std::cout << j << '\n';
-	// 		if (!(strcmp(argv[i], argv[j])) && i != j) {
-	// 			error("No duplicated allowed", argv[j]);
-	// 			return 0;
-	// 		}
-	// 	}
-	// }
 	*N = argc - 1;
 	arr = new int[*N];
-	for (size_t i = 0; i < *N; i++) {
-		arr[i] = atoi(argv[i + 1]);
+	for (int i = 1; i < argc; i++) {
+		num = atoi(argv[i]);
+		if (num == 0 && argv[i][0] != '0') {
+			error("Invalid Number", argv[i]);
+			return 0;
+		}
+        if (num < 0 && firstOcc(argv[i]) != '-') {
+            error("Number too big", argv[i]);
+            return 0;
+        }
+		if (num < 0) { 
+			error("Only positive numbers allowed", argv[i]);
+			return 0;
+		}
+        arr[i - 1] = num;
 	}
 	return arr;
 }
@@ -51,48 +105,41 @@ int main(int argc, char **argv) {
     int *arr;
     size_t N;
     struct timeval tp_start, tp_end;
-    long  us_vector, us_deque;
-    std::cout << argc << '\n';
+    long long us_vector, us_deque;
+
     if (argc == 1) {
         std::cout << CYAN300 << "\nUsage:" << PINK200 << "./PmergeMe < n1 > < n2 > ...\n" << RESET;
         return 0;
     }
 
+    std::cout << '\n';
     arr = parseInput(argc, argv, &N);
+    if (!arr)
+        return 0;
     mergeMe.setArr(arr, N);
 
-    // Measure sortVector
     gettimeofday(&tp_start, 0);
     mergeMe.sortVector();
     gettimeofday(&tp_end, 0);
 
-    // ms_vector = (tp_end.tv_sec - tp_start.tv_sec) * 1000 +
-    //             (tp_end.tv_usec - tp_start.tv_usec) / 1000;
     us_vector = (tp_end.tv_sec - tp_start.tv_sec) * 1000000 +
                 (tp_end.tv_usec - tp_start.tv_usec);
 
-    // Measure sortDeque
     gettimeofday(&tp_start, 0);
     mergeMe.sortDeque();
     gettimeofday(&tp_end, 0);
 
-    // ms_deque = (tp_end.tv_sec - tp_start.tv_sec) * 1000 +
-    //            (tp_end.tv_usec - tp_start.tv_usec) / 1000;
+    formatPrint(arr, N, mergeMe.getVec());
+
     us_deque = (tp_end.tv_sec - tp_start.tv_sec) * 1000000 +
                (tp_end.tv_usec - tp_start.tv_usec);
 
-    // Display times with appropriate units
-    // if (ms_vector > 0)
-    //     std::cout << "sortVector timestamp: " << ms_vector << " ms\n";
-    // else
-        std::cout << "sortVector timestamp: " << (double)us_vector / 10000 << " us\n";
+    std::cout << CYAN200 << "Vector" << RESET << " timestamp: " << EMERALD400 << (double)us_vector / 10000 << YELLOW200 << " ms\n" RESET;
 
-    // if (ms_deque > 0)
-    //     std::cout << "sortDeque timestamp: " << ms_deque << " ms\n";
-    // else
-        std::cout << "sortDeque timestamp: " << (double)us_deque / 10000 << " us\n";
+    std::cout << AMBER300 << "Deque" << RESET << " timestamp: " << EMERALD400 << (double)us_deque / 10000 << YELLOW200 << " ms\n" RESET;
 
     delete[] arr;
 
+    std::cout << '\n';
     return 0;
 }

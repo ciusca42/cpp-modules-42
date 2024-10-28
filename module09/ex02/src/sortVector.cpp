@@ -1,4 +1,6 @@
 #include "../classes/PmergeMe.hpp"
+#include <algorithm>
+#include <fstream>
 
 void PmergeMe::printPairs(std::pair<int, int> *pairs, size_t n) {
 	for (size_t i = 0; i < n; i++) {
@@ -30,7 +32,6 @@ void PmergeMe::merge(std::pair<int, int> *pairs, int left, int mid, int right) {
 	int i = 0, j = 0;
 	int k = left;
 
-	// printPairs(pairs, this->len / 2);
 	for (int i = 0; i < len; i++) {
 		L[i] = pairs[left + i];
 	}
@@ -82,7 +83,7 @@ std::vector<long> jacobIndex(std::vector<long> pend) {
 
 	jacob.push_back(0);
 	jacob.push_back(1);
-	for (size_t i = 2; i < pend.size() + 1; i++) {
+	for (size_t i = 2; i < pend.size() + 3; i++) {
 		j = prev;
 		j2 =  2 * (prev2);
 		jacob.push_back(j + j2);
@@ -99,11 +100,6 @@ std::vector<long> jacobIndex(std::vector<long> pend) {
 	}
 	
 	jacob.erase(jacob.begin(), jacob.begin() + 3);
-	// std::cout << "--- jacob --- \n";
-	// for (size_t i = 0; i < jacob.size(); i++) {
-	// 	std::cout << jacob[i] << " ";
-	// }
-	// std::cout << '\n';
 	return jacob;
 }
 
@@ -131,10 +127,9 @@ void printVec(std::vector<long> vec) {
 
 
 void PmergeMe::vecFinalSort(std::pair<int, int> *pairs) {
-	std::vector<long> pend, jacob;
+	std::vector<long> 			pend, jacob;
 	std::vector<long>::iterator it;
-
-	int				index;
+	int							index;
 
 	for (size_t i = 0; i < this->len / 2; i++) {
 		vec.push_back(pairs[i].first);
@@ -143,9 +138,9 @@ void PmergeMe::vecFinalSort(std::pair<int, int> *pairs) {
 	
 	vec.insert(vec.begin(), pend[0]);
 	jacob = jacobIndex(pend);
-	printVec(jacob);
-	printVec(vec);
-	printVec(pend);
+	// printVec(jacob);
+	// printVec(vec);
+	// printVec(pend);
 
 	for (size_t i = 0; i < jacob.size(); i++) {
 		index = jacob[i] - 1;
@@ -162,16 +157,6 @@ void PmergeMe::vecFinalSort(std::pair<int, int> *pairs) {
 
 }
 
-void formatPrint(std::vector<long> vec) {
-	int count = 0;
-	for (size_t i = 0; i < vec.size(); i++) {
-		if (count == 4)
-			break;
-		std::cout << vec[i] << " ";
-		count++;
-	}
-	std::cout << '\n';
-}
 
 void PmergeMe::sortVector() {
 	int 				j = 0;
@@ -189,6 +174,5 @@ void PmergeMe::sortVector() {
 	mergeSort(pairs, 0, len / 2 -1);	
 	// printPairs(pairs, len /2);
 	vecFinalSort(pairs);
-	formatPrint(vec);
 	delete[] pairs;
 }
