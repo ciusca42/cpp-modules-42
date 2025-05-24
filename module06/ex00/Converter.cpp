@@ -2,6 +2,7 @@
 #include "colors.hpp"
 #include <cctype>
 #include <climits>
+#include <limits>
 #include <cmath>
 #include <iomanip>
 #include <iostream>
@@ -22,16 +23,16 @@ int countPrecision(std::string &value) {
 	int count = 0;
 	int start = value.find(".");
 
-	for (int i = start; i < value.length(); i++) {
+	for (int i = start + 1; i < value.length() && isdigit(value[i]); i++) {
 		count++;
 	}
-	return count - 1;
+	return count;
 }
 
 int isChar(std::string &value) {
 	char c;
 
-	if (isalpha(value[0]) && value.length() == 1) {
+	if (isascii(value[0]) && value.length() == 1) {
 		c = value[0];
 		std::cout << std::fixed;
 		std::cout << std::setprecision(2);
@@ -79,14 +80,13 @@ int isDouble(std::string &value) {
 	std::cout << std::setprecision(countPrecision(value));
 	d = atof(value.c_str());
 	// std::cout << "actual = " << d << '\n';
-	str << std::fixed << std::setprecision(countPrecision(value));
+	str << std::fixed << std::setprecision(countPrecision(value)) << d;
 	final = str.str();
 	if (value[0] == '+') {
 		value.erase(0, 1);
 	}
 	if (final == value) {
-			std::cout << "double\n";
-		if (d == INFINITY || d == -INFINITY || d != d) {
+		if (d == INFINITY || d == -std::numeric_limits<double>::infinity()|| d != d) {
 			std::cout << "Char: Impossible\n";
 			std::cout << "Int: Impossible\n";
 		}
@@ -107,20 +107,21 @@ int isFloat(std::string &value) {
 	std::ostringstream str;
 	std::string final;
 
+	
 	std::cout << std::fixed;
 	std::cout << std::setprecision(countPrecision(value));
 	f = atof(value.c_str());
-	//std::cout << "f = " << f << '\n';
-	str << f;
- 
+	// std::cout << "actual = " << d << '\n';
+	str << std::fixed << std::setprecision(countPrecision(value)) << f;
 	final = str.str();
+	
 	if (value[0] == '+') {
 		value.erase(0, 1);
 	}
-	if (value[value.length() -1] == 'f')
+	if (value[value.length() -1] == 'f' && (value != "inf" && value != "-inf"))
 		value.erase(value.length() -1);
 	if (final == value) {
-		if (f == INFINITY || f == -INFINITY || f != f) {
+		if (f == INFINITY || f == -INFINITY|| f != f) {
 			std::cout << "Char: Impossible\n";
 			std::cout << "Int: Impossible\n";
 		}
@@ -151,6 +152,16 @@ ScalarConverter::ScalarConverter(const ScalarConverter &obj) {
 }
 
 void ScalarConverter::convert(std::string value) {
+
+	while (isspace(value[0])) {
+		value.erase(0);
+	}
+
+	while (isspace(value[value.length() - 1])) {
+		value.erase(value.length() -1);
+	}
+
+
 	if (isInt(value))
 		return ;
 	if (isChar(value))
@@ -161,7 +172,7 @@ void ScalarConverter::convert(std::string value) {
 		return ;
 	
 	std::cerr << ROSE300 << "\n   Error: invalid input\n\n";
-	std::cerr << STONE300 << "   Input has invalid characters or it's to big for the for the inserted type\n";
+	std::cerr << STONE300 << "   Input has invalid characters or it's to big for the inserted type\n";
 	std::cerr << "   E.G. largest int is: ["<< LIME300 << INT_MAX << RESET << "]\n\n";
 	std::cerr << YELLOW300 << "   The only accectable values are: " CYAN300 << "char / int / double / float\n";
 	std::cerr << RESET << "   ===========================================================\n";

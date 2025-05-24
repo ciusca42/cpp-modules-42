@@ -7,8 +7,6 @@ int main(int argc, char **argv) {
 	}
 
 	ScalarConverter::convert(argv[1]);
-	if (2 != 0)
-		return 0;
 
 	return 0;
 }
