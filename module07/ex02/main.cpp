@@ -12,7 +12,7 @@ int main() {
 	
 	for (int i = 0; i < (int)arr.size(); i++) {
 		std::cout << "arr1: " << arr[i] << " ---- ";
-		std::cout << "arr2: " << temp[i] << '\n';
+		std::cout << "temp: " << temp[i] << '\n';
 	}
 	try {
 		arr[10];

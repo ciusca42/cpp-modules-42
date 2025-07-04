@@ -1,7 +1,7 @@
 #ifndef WHATEVER_HPP
 # define WHATEVER_HPP
 
-template <typename T> void swap(T x, T y) {
+template <typename T> void swap(T &x, T &y) {
 	T temp;
 
 	temp = x;

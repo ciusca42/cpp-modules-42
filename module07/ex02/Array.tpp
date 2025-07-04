@@ -19,7 +19,6 @@ Array<T>::Array(uint len) : len(len) {
 
 template <typename T>
 Array<T>::~Array() {
-    std::cout << "[DESTRUCTOR] called\n";
     delete[] this->arr;
 }
 

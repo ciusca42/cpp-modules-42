@@ -22,10 +22,10 @@ clean:
 re: clean all
 
 run: all
-	@./$(NAME)
+	@./$(NAME) "8 4 * 9 - 9 - 9 - 4 - 1 +"
 
 val: all
-	@valgrind --leak-check=full --show-leak-kinds=all ./$(NAME)
+	@valgrind --leak-check=full --show-leak-kinds=all ./$(NAME) "8 4 * 9 - 9 - 9 - 4 - 1 +"
 
 .SILENT:
 

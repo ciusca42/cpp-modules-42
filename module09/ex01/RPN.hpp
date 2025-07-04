@@ -17,12 +17,12 @@ class RPN {
 		void printResult(std::string expr);
 	private:
 		//container
-		std::stack<int> exp;
+		std::stack<std::string> exp;
 
-		int performOp(int first, int second, char sign);
-
+		std::string performOp(std::string first, std::string second, std::string sign);
+		int parseExpr(std::stack<std::string> exp);
 		int tokenizer(std::string exprStr);
-		int isSign(int c);
+		int isSign(std::string elem);
 		int checkValid(std::string str, int i);
 		void err(const std::string msg);
 		void printStack();

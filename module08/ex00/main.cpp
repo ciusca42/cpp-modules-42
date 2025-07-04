@@ -12,6 +12,17 @@ int main(void) {
 		std::cout << "Element not found" << std::endl;
 	}
 
+	std::vector<int> arr2;
+
+	result = easyfind(arr2, 23);
+	if (result != arr2.end()) {
+		std::cout << "Element2 found: " << *result << std::endl;
+	} else {
+		std::cout << "Element2 not found" << std::endl;
+	}
+
 	return 0;
+
+
 
 }

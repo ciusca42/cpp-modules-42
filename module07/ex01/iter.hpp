@@ -10,7 +10,7 @@ template <typename T> void iter(T *addr, int n, void(*func)(T par)) {
 }
 
 template <typename T> void print(T base) {
-	std::cout << base << ' ';
+	std::cout << base << '-';
 }
 
 #endif
