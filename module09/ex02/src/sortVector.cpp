@@ -136,6 +136,7 @@ void PmergeMe::vecFinalSort(std::pair<int, int> *pairs) {
 		pend.push_back(pairs[i].second);
 	}
 	
+	// std::cout << "vec.begin() == " << vec[0] << " pend ==="  << std::endl;  
 	vec.insert(vec.begin(), pend[0]);
 	jacob = jacobIndex(pend);
 	// printVec(jacob);

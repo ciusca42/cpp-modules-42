@@ -1,6 +1,7 @@
 #include "classes/PmergeMe.hpp"
 #include "colors.hpp"
 #include <bits/types/struct_timeval.h>
+#include <climits>
 #include <cstddef>
 #include <cstdlib>
 #include <cstring>
@@ -32,17 +33,17 @@ void createLogFile(std::string filename, std::vector<long> arr) {
 
 void formatPrint(int *arr, int N, std::vector<long> vec) {
 	size_t count = 0;
-    int     countArr = 0;
+    size_t     countArr = 0;
 
     
-    std::cout << VIOLET400 << "BEFORE -> " RESET;
+    std::cout << VIOLET400 << "\nBEFORE -> " RESET;
     for (int i = 0; i < N; i++) {
         if (countArr == 6)
             break;
         std::cout << VIOLET200 << arr[i] << " " RESET;
         countArr++;
     }
-    if (count < vec.size()) {
+    if (countArr < vec.size()) {
 		std::cout << "[...] ";
 		createLogFile("before.log", vec);
 		std::cout << STONE400 << " => log file created '" << LIME300 << "before.log" << STONE300 "'" RESET;
@@ -75,25 +76,31 @@ char firstOcc(std::string str) {
     return str[0];
 }
 
+int *inputError(std::string msg, int *arr, std::string num) {
+	error(msg, num);
+	delete[] arr;
+	return 0;
+}
+
 int *parseInput(int argc, char **argv, size_t *N) {
 	int 	*arr;
-	int		num;
+	long	num;
 
 	*N = argc - 1;
 	arr = new int[*N];
 	for (int i = 1; i < argc; i++) {
-		num = atoi(argv[i]);
+		num = atol(argv[i]);
+		if (num > INT_MAX || num < INT_MIN) {
+			return inputError("Number to big => Limits: INT_MAX / INT_MIN" , arr, argv[i]);
+		}
 		if (num == 0 && argv[i][0] != '0') {
-			error("Invalid Number", argv[i]);
-			return 0;
+			return inputError("Invalid Number", arr, argv[i]);
 		}
         if (num < 0 && firstOcc(argv[i]) != '-') {
-            error("Number too big", argv[i]);
-            return 0;
+			return inputError("Number too big", arr, argv[i]);
         }
 		if (num < 0) { 
-			error("Only positive numbers allowed", argv[i]);
-			return 0;
+			return inputError("Only positive numbers allowed", arr, argv[i]);
 		}
         arr[i - 1] = num;
 	}
@@ -108,14 +115,18 @@ int main(int argc, char **argv) {
     long long us_vector, us_deque;
 
     if (argc == 1) {
-        std::cout << CYAN300 << "\nUsage:" << PINK200 << "./PmergeMe < n1 > < n2 > ...\n" << RESET;
+        std::cout << CYAN300 << "\nUsage:" << PINK200 << "./PmergeMe <n1> <n2> ...\n\n" << RESET;
         return 0;
     }
 
-    std::cout << '\n';
     arr = parseInput(argc, argv, &N);
-    if (!arr)
-        return 0;
+    if (!arr) {
+		return 0;
+	}
+	if (N <= 1) {
+		std::cout << CYAN300 << "\nUsage:" << PINK200 << "./PmergeMe <n1> <n2> ...\n\n" << RESET;
+		return 0;
+	}
     mergeMe.setArr(arr, N);
 
     gettimeofday(&tp_start, 0);
@@ -134,6 +145,7 @@ int main(int argc, char **argv) {
     us_deque = (tp_end.tv_sec - tp_start.tv_sec) * 1000000 +
                (tp_end.tv_usec - tp_start.tv_usec);
 
+
     std::cout << CYAN200 << "Vector" << RESET << " timestamp: " << EMERALD400 << (double)us_vector / 10000 << YELLOW200 << " ms\n" RESET;
 
     std::cout << AMBER300 << "Deque" << RESET << " timestamp: " << EMERALD400 << (double)us_deque / 10000 << YELLOW200 << " ms\n" RESET;
@@ -141,5 +153,6 @@ int main(int argc, char **argv) {
     delete[] arr;
 
     std::cout << '\n';
+
     return 0;
 }
