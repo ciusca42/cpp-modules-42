@@ -24,10 +24,12 @@ class BitcoinExchange {
 		void printValue(std::ifstream &inputFile);
 
 	private:
+		
+
 		int setDb(std::ifstream &dbFile);
 
 		void error(const std::string msg);
-		time_t parseDate(const char *dateSTring);
+		time_t parseDate(std::string dateSTring);
 		std::string formatDate(time_t time);
 		float parseNumber(std::string line, int pos);
 		void printValidDate(time_t date, float btcN, iterator it);

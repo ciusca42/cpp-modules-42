@@ -38,15 +38,31 @@ BitcoinExchange &BitcoinExchange::operator=(const BitcoinExchange &obj) {
 	return *this;
 }
 
-time_t BitcoinExchange::parseDate(const char *dateString) {
+time_t BitcoinExchange::parseDate(std::string dateString) {
+	trimSpace(dateString);
+	// std::cout << "for loop" << std::endl;
+	// std::cout << "parse date: " << dateString.c_str() << std::endl;
     struct tm tmStruct = {};  // Initialize to zero to avoid garbage values
+	time_t t;
     // Parse the date string into the tmStruct
-    if (strptime(dateString, "%Y-%m-%d", &tmStruct) == NULL) {
-        std::cerr << "Error parsing date" << std::endl;
+    if (strptime(dateString.c_str(), "%Y-%m-%d", &tmStruct) == NULL) {
+        error("Error parsing date");
         return -1;  // Handle error (e.g., invalid date format)
     }
     // Create time_t object
-    return mktime(&tmStruct);
+    t = mktime(&tmStruct);
+
+	char buffer[11];
+	strftime(buffer, sizeof(buffer), "%Y-%m-%d", &tmStruct);
+
+// Check if normalized date differs from input
+	if (dateString != buffer) {
+		error("invalid date");
+		return -1;
+	}
+
+// Proceed with valid date
+	return t;
 }
 
 std::string BitcoinExchange::formatDate(time_t time) {
@@ -73,7 +89,7 @@ int BitcoinExchange::setDb(std::ifstream &file) {
 		key.insert(0, line, 0, pos);
 		value.insert(0, line, pos + 1);
 		// std::cout << "\ninit: " << key << '\n';
-		this->db[parseDate(key.c_str())] = atof(value.c_str());
+		this->db[parseDate(key)] = atof(value.c_str());
 		key.clear();
 		value.clear();
 	}
@@ -93,11 +109,11 @@ float	BitcoinExchange::parseNumber(std::string line, int pos) {
 
 	date = line.substr(0, pos);
 	trimSpace(date);
-	value = line.substr(pos+ 1);
+	value = line.substr(pos + 1);
 	trimSpace(value);
 	btc = atof(value.c_str());
 	str << btc;
-	if ((btc == 0 && value.length() > 1)) {
+	if ((btc == 0 && value.length() > 1) || (btc == 0 && value != "0")) {
 		error("bad input => " + date);
 		return -1;
 	}
@@ -122,10 +138,11 @@ void BitcoinExchange::printValue(std::ifstream &inputFile) {
 	time_t			date;
 	float			btcN;
 	int				pos;
-	int				i = 0;
+	int				i = 1;
 
 	iterator dbIt;
 	getline(inputFile, line);
+	trimSpace(line); 
 	if (line != "date | value") {
 		error("missing or invalid header");
 		return ;
@@ -133,9 +150,9 @@ void BitcoinExchange::printValue(std::ifstream &inputFile) {
 	while(getline(inputFile, line)) {
 		i++;
 		trimSpace(line);
-		std::cout << GREEN200 << i << ' ' << RESET;
-		if (line == "") {
-			std::cout << "'empty line'\n";
+		std::cout << PURPLE200 "[" << GREEN200 << i << PURPLE200 "]" << RESET << ' ';
+		if (line.empty()) {
+			std::cout << GRAY200 << "'empty line'\n";
 			continue;
 		}
 		pos = line.find("|");
@@ -143,7 +160,9 @@ void BitcoinExchange::printValue(std::ifstream &inputFile) {
 			error("bad input => " + line);
 			continue;
 		}
-		date = parseDate(line.substr(0, pos).c_str());
+		date = parseDate(line.substr(0, pos));
+		if (date == -1)
+			continue;
 		dbIt = this->db.find(date);
 		btcN = parseNumber(line, pos);
 		if (btcN < 0) {
