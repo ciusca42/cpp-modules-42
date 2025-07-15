@@ -18,14 +18,15 @@ class RPN {
 	private:
 		//container
 		std::stack<std::string> exp;
+		std::stack<std::string> result;
 
-		std::string performOp(std::string first, std::string second, std::string sign);
+		void performOp(std::stack<std::string> &result);
 		int parseExpr(std::stack<std::string> exp);
 		int tokenizer(std::string exprStr);
 		int isSign(std::string elem);
 		int checkValid(std::string str, int i);
 		void err(const std::string msg);
-		void printStack();
+		void printStack(std::stack<std::string> &stack);
 };
 
 #endif
