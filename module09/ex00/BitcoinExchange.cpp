@@ -1,5 +1,6 @@
 #include "BitcoinExchange.hpp"
 #include "colors.hpp"
+#include <cctype>
 #include <climits>
 #include <cstdlib>
 #include <cstring>
@@ -106,23 +107,42 @@ float	BitcoinExchange::parseNumber(std::string line, int pos) {
 	std::string 		value;
 	std::string			date;
 	std::ostringstream	str;
+	std::string			temp;
+	char				sign;
 
 	date = line.substr(0, pos);
 	trimSpace(date);
 	value = line.substr(pos + 1);
 	trimSpace(value);
 	btc = atof(value.c_str());
+
+	// std::cout << "btc: " << btc << std::endl;
 	str << btc;
+	// std::cout << "str: " << str.str() << std::endl;
+	// if (str.str().length() != value.length()) {
+	// 	error("bad number => " + value);
+	// 	return -1;
+	// }
+	if (value[0] == '+') {
+		temp = str.str().insert(0, "+");
+		str.str(temp);
+	}
+	// std::cout << "value 0: " << value[0] << std::endl;
+	// std::cout << "str: " << str.str() << " value: " << value << std::endl;
 	if ((btc == 0 && value.length() > 1) || (btc == 0 && value != "0")) {
-		error("bad input => " + date);
+		error("bad value => " + value);
+		return -1;
+	}
+	if (str.str().length() != value.length()) {
+		error("bad value => " + value);
 		return -1;
 	}
 	if (btc > 1000) {
-		error("number too big");
+		error("value too big");
 		return -1;
 	}
 	if (btc < 0) {
-		error("not a positive number");
+		error("not a positive ");
 		return -1;
 	}
 	return btc;
@@ -157,7 +177,7 @@ void BitcoinExchange::printValue(std::ifstream &inputFile) {
 		}
 		pos = line.find("|");
 		if (pos == -1) {
-			error("bad input => " + line);
+			error("missing => '|'");
 			continue;
 		}
 		date = parseDate(line.substr(0, pos));
