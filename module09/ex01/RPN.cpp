@@ -164,7 +164,7 @@ void RPN::printResult(std::string expr) {
 		result.push(elem);
 		// std::cout << "pushing: " << elem << std::endl;
 		if (isSign(elem)) {
-			printStack(result);
+			// printStack(result);
 			// std::cout << "performing operation: " << std::endl;
 			performOp(result);
 		}

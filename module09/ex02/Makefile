@@ -1,43 +1,53 @@
 NAME = PmergeMe
 
-SRC = main.cpp src/PmergeMe.cpp src/sortDeque.cpp src/sortVector.cpp
+SRC_DIR = src/
+
+CPP_FILES = main.cpp PmergeMe.cpp sortDeque.cpp sortVector.cpp
+
+SRC = $(addprefix src/, $(CPP_FILES))
 
 CPP = c++
 
-CFLAGS = -Wall -Wextra -Werror -g
+FLAGS = -Wall -Wextra -Werror
 
-C98 = -std=c++98
+C98 = -std=c++98 -g
 
-ARG=
+BUILD_DIR = build
+
+OBJ = $(patsubst $(SRC_DIR)%, $(BUILD_DIR)/%, $(SRC:.cpp=.o))
 
 all: $(NAME)
 
-$(NAME): $(SRC)
+$(NAME): $(OBJ)
 	@echo Compiling...
-	$(CPP) $(CFLAGS) $(C98) -D DEBUG=$(DBG) $(SRC) -o $(NAME)
+	@if [ ! -d $(BUILD_DIR) ]; then\
+		mkdir $(BUILD_DIR);\
+	fi
+	$(CPP) $(CFLAGS) $(C98) $(OBJ) -o $(NAME)
 	@echo Compilation complete.
-	@echo "===================="
+
+$(BUILD_DIR)/%.o: src/%.cpp
+	@mkdir -p $(BUILD_DIR)
+	$(CPP) $(CFLAGS) $(C98) -c $< -o $@
 
 clean:
+	rm -f $(BUILD_DIR)/*.o
+	@rm -rf $(BUILD_DIR)
+
+fclean: clean
 	rm -f $(NAME)
-	rm before.log
-	rm after.log
 
 re: clean all
 
 run: all
-	@./$(NAME) $(ARG)
+	./$(NAME)
 
 val: all
-	@valgrind --leak-check=full --show-leak-kinds=all ./$(NAME) $(ARG)
-
-# Use the debug target to override the DEBUG variable
-debug: 
-	$(MAKE) DEBUG=1
+	valgrind --leak-check=full ./$(NAME)
 
 .SILENT:
 
 .DEFAULT:
-	@echo "Usage: make [ all | clean | re | run | val | debug ]"
+	@echo "Usage: make [ all | clean | fclean | re | run | val ]"
 
-.PHONY: all clean re run val debug
+.PHONY: all clean fclean re
